@@ -1,3 +1,4 @@
+using InvoiceService.ExternalSystems;
 using InvoiceService.Infrastructure.Middleware;
 using InvoiceService.Invoices.InvoiceEndpoints;
 using InvoiceService.Invoices.Repositories;
@@ -9,6 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IInvoiceRepository, InMemoryInvoiceService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceProcessingService>();
+builder.Services.AddSingleton<IExternalSystemClient, FakeExternalSystemClient>();
+
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 var app = builder.Build();

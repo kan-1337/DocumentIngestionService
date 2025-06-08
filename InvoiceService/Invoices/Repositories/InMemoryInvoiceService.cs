@@ -1,15 +1,22 @@
 ﻿using InvoiceService.Invoices.Models;
-using InvoiceService.Invoices.Repositories;
+using Shared.Common.Exceptions;
 
-namespace InvoiceService.Invoices.Services;
+namespace InvoiceService.Invoices.Repositories;
 public class InMemoryInvoiceService : IInvoiceRepository
 {
     private readonly Dictionary<Guid, Invoice> _store = new();
 
     public Task SaveAsync(Invoice invoice)
     {
-        _store[invoice.Id] = invoice;
-        return Task.CompletedTask;
+        try
+        {
+            _store[invoice.Id] = invoice;
+            return Task.CompletedTask;
+        }
+        catch (Exception ex)
+        {
+            throw new PersistenceException("Failed to save invoice.", ex);
+        }
     }
 
     public Task<Invoice?> GetByIdAsync(Guid id)
