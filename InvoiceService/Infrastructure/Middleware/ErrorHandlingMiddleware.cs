@@ -1,7 +1,7 @@
 ﻿using InvoiceService.Invoices.Models;
 using Shared.Common.Exceptions;
 
-namespace InvoiceService.Infrastructure.Middleware;
+namespace DocumentIngestion.Api.Infrastructure.Middleware;
 public class ErrorHandlingMiddleware
 {
     private readonly RequestDelegate _next;

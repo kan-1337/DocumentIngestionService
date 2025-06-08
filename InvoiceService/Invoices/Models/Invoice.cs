@@ -1,7 +1,7 @@
 ﻿using Shared.Common.Exceptions;
 using Shared.Common.Models;
 
-namespace InvoiceService.Invoices.Models;
+namespace DocumentIngestion.Api.Invoices.Models;
 public class Invoice : EntityBase
 {
     public Guid SupplierId { get; set; }

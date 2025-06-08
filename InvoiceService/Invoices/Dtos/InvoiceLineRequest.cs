@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace InvoiceService.Invoices.Dtos;
+﻿namespace DocumentIngestion.Api.Invoices.Dtos;
 public class InvoiceLineRequest
 {
     public string Description { get; set; } = default!;

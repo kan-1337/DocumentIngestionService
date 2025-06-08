@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IInvoiceRepository, InMemoryInvoiceService>();
-builder.Services.AddScoped<IInvoiceService, InvoiceProcessingService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddSingleton<IExternalSystemClient, FakeExternalSystemClient>();
 
 builder.Logging.ClearProviders();

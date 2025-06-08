@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvoiceService", "InvoiceService\InvoiceService.csproj", "{9E4598CC-E2F5-4FD2-AE47-55F15E18654B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentIngestion.Api", "InvoiceService\DocumentIngestion.Api.csproj", "{9E4598CC-E2F5-4FD2-AE47-55F15E18654B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Common", "Shared.Common\Shared.Common.csproj", "{BD3A8D1C-0AB5-4544-AB50-AB5C88FC7FDF}"
 EndProject

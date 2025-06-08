@@ -1,17 +1,17 @@
-﻿using InvoiceService.ExternalSystems;
-using InvoiceService.Invoices.Dtos;
-using InvoiceService.Invoices.Models;
+﻿using DocumentIngestion.Api.ExternalSystems;
+using DocumentIngestion.Api.Invoices.Dtos;
+using DocumentIngestion.Api.Invoices.Models;
 using InvoiceService.Invoices.Repositories;
 using Shared.Common.Exceptions;
 
-namespace InvoiceService.Invoices.Services;
-public class InvoiceProcessingService : IInvoiceService
+namespace DocumentIngestion.Api.Invoices.Services;
+public class InvoiceService  : IInvoiceService
 {
     private readonly IInvoiceRepository _repo;
     private readonly IExternalSystemClient _external;
-    private readonly ILogger<InvoiceProcessingService> _logger;
+    private readonly ILogger<InvoiceService > _logger;
 
-    public InvoiceProcessingService(IInvoiceRepository repo, IExternalSystemClient external, ILogger<InvoiceProcessingService> logger)
+    public InvoiceService (IInvoiceRepository repo, IExternalSystemClient external, ILogger<InvoiceService > logger)
     {
         _repo = repo;
         _external = external;

@@ -1,7 +1,7 @@
-﻿using InvoiceService.Invoices.Dtos;
-using InvoiceService.Invoices.Models;
+﻿using DocumentIngestion.Api.Invoices.Dtos;
+using DocumentIngestion.Api.Invoices.Models;
 
-namespace InvoiceService.Invoices.Maping;
+namespace DocumentIngestion.Api.Invoices.Maping;
 public static class InvoiceMappings
 {
     public static InvoiceResponse ToResponse(this Invoice invoice)
@@ -15,12 +15,12 @@ public static class InvoiceMappings
             TotalAmount = invoice.TotalAmount,
             Currency = "DKK",
 
-            Lines = invoice.Lines.Select(l => new InvoiceLineResponse
+            Lines = [.. invoice.Lines.Select(l => new InvoiceLineResponse
             {
                 Description = l.Description,
                 Quantity = l.Quantity,
                 UnitPrice = l.UnitPrice
-            }).ToList()
+            })]
         };
     }
 }

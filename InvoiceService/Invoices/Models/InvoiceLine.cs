@@ -1,4 +1,4 @@
-﻿namespace InvoiceService.Invoices.Models;
+﻿namespace DocumentIngestion.Api.Invoices.Models;
 public class InvoiceLine
 {
     public string Description { get; }

@@ -1,8 +1,8 @@
-﻿using InvoiceService.Invoices.Dtos;
-using InvoiceService.Invoices.Maping;
-using InvoiceService.Invoices.Services;
+﻿using DocumentIngestion.Api.Invoices.Dtos;
+using DocumentIngestion.Api.Invoices.Maping;
+using DocumentIngestion.Api.Invoices.Services;
 
-namespace InvoiceService.Invoices.InvoiceEndpoints;
+namespace DocumentIngestion.Api.Invoices.InvoiceEndpoints;
 public static class InvoiceEndpoints
 {
     public static void MapInvoiceEndpoints(this WebApplication app)

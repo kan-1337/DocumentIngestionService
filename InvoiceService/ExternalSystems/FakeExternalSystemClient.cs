@@ -1,4 +1,4 @@
-﻿namespace InvoiceService.ExternalSystems;
+﻿namespace DocumentIngestion.Api.ExternalSystems;
 public class FakeExternalSystemClient : IExternalSystemClient
 {
     private readonly ILogger<FakeExternalSystemClient> _logger;

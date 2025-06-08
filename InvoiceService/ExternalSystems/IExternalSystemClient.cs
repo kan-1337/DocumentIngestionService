@@ -1,4 +1,4 @@
-﻿namespace InvoiceService.ExternalSystems;
+﻿namespace DocumentIngestion.Api.ExternalSystems;
 public interface IExternalSystemClient
 {
     Task NotifySupplierAsync(Guid supplierId);

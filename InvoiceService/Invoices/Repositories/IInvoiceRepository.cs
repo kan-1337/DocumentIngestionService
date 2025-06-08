@@ -1,4 +1,4 @@
-﻿using InvoiceService.Invoices.Models;
+﻿using DocumentIngestion.Api.Invoices.Models;
 
 namespace InvoiceService.Invoices.Repositories;
 public interface IInvoiceRepository

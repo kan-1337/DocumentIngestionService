@@ -1,7 +1,7 @@
-﻿using InvoiceService.Invoices.Dtos;
-using InvoiceService.Invoices.Models;
+﻿using DocumentIngestion.Api.Invoices.Dtos;
+using DocumentIngestion.Api.Invoices.Models;
 
-namespace InvoiceService.Invoices.Services;
+namespace DocumentIngestion.Api.Invoices.Services;
 public interface IInvoiceService
 {
     /// <summary>

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace InvoiceService.Invoices.Dtos;
+namespace DocumentIngestion.Api.Invoices.Dtos;
 public class CreateInvoiceRequest
 {
     [Required]

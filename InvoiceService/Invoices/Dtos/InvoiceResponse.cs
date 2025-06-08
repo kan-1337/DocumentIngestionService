@@ -1,11 +1,11 @@
-﻿namespace InvoiceService.Invoices.Dtos;
-public class InvoiceResponse
+﻿namespace DocumentIngestion.Api.Invoices.Dtos;
+public record class InvoiceResponse
 {
-    public Guid Id { get; set; }
-    public string InvoiceNumber { get; set; } = null!;
-    public Guid SupplierId { get; set; }
-    public DateTime InvoiceDate { get; set; }
-    public decimal TotalAmount { get; set; }
-    public string Currency { get; set; } = null!;
-    public List<InvoiceLineResponse> Lines { get; set; } = new();
+    public Guid Id { get; init; }
+    public string InvoiceNumber { get; init; } = null!;
+    public Guid SupplierId { get; init; }
+    public DateTime InvoiceDate { get; init; }
+    public decimal TotalAmount { get; init; }
+    public string Currency { get; init; } = null!;
+    public List<InvoiceLineResponse> Lines { get; init; } = new();
 }

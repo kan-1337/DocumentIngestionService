@@ -1,4 +1,4 @@
-﻿namespace InvoiceService.Invoices.Dtos;
+﻿namespace DocumentIngestion.Api.Invoices.Dtos;
 public class InvoiceLineDto
 {
     public string? Description { get; set; }

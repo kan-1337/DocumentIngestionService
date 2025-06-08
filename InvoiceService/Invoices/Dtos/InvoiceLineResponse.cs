@@ -1,8 +1,8 @@
-﻿namespace InvoiceService.Invoices.Dtos;
-public class InvoiceLineResponse
+﻿namespace DocumentIngestion.Api.Invoices.Dtos;
+public record class InvoiceLineResponse
 {
-    public string? Description { get; set; }
-    public int Quantity { get; set; }
-    public decimal UnitPrice { get; set; }
-    public decimal Total { get; set; }
+    public string? Description { get; init; }
+    public int Quantity { get; init; }
+    public decimal UnitPrice { get; init; }
+    public decimal Total { get; init; }
 }
