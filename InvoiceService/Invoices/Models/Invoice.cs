@@ -11,4 +11,42 @@ public class Invoice : EntityBase
     public IReadOnlyCollection<InvoiceLine> Lines => _lines.AsReadOnly();
 
     public decimal TotalAmount => _lines.Sum(l => l.Total);
+
+    public Invoice(string invoiceNumber, DateTime invoiceDate)
+    {
+        if (string.IsNullOrWhiteSpace(invoiceNumber))
+            throw new ArgumentException("Invoice number is required");
+        InvoiceNumber = invoiceNumber;
+        InvoiceDate = invoiceDate;
+    }
+
+    public void AddLine(string description, int quantity, decimal unitPrice)
+    {
+        if (Status != InvoiceStatus.Draft)
+        {
+            throw new InvalidOperationException("Can only add lines to a draft invoice");
+        }
+
+        _lines.Add(new InvoiceLine(description, quantity, unitPrice));
+    }
+
+    public void Submit()
+    {
+        if (!_lines.Any())
+        {
+            throw new InvalidOperationException("Cannot submit an invoice without line items");
+        }
+
+        Status = InvoiceStatus.Submitted;
+    }
+
+    public void MarkAsPaid()
+    {
+        if (Status != InvoiceStatus.Submitted)
+        {
+            throw new InvalidOperationException("Only submitted invoices can be marked as paid");
+        }
+
+        Status = InvoiceStatus.Paid;
+    }
 }
