@@ -12,10 +12,6 @@ public class CreateInvoiceRequest
     [Required] 
     public DateTime InvoiceDate { get; set; }
 
-    [Required]
-    [Range(0.00, double.MaxValue, ErrorMessage = "Total must be 0 or above")]
-    public decimal TotalAmount { get; set; }
-
     [Required] 
     public string Currency { get; set; } = default!;
 
