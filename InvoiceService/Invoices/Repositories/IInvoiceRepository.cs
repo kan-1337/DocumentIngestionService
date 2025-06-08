@@ -1,6 +1,6 @@
 ﻿using DocumentIngestion.Api.Invoices.Models;
 
-namespace InvoiceService.Invoices.Repositories;
+namespace DocumentIngestion.Api.Invoices.Repositories;
 public interface IInvoiceRepository
 {
     Task SaveAsync(Invoice invoice);

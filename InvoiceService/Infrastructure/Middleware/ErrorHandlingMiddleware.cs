@@ -1,4 +1,4 @@
-﻿using InvoiceService.Invoices.Models;
+﻿using DocumentIngestion.Api.Invoices.Models;
 using Shared.Common.Exceptions;
 
 namespace DocumentIngestion.Api.Infrastructure.Middleware;

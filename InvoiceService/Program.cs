@@ -1,8 +1,8 @@
-using InvoiceService.ExternalSystems;
-using InvoiceService.Infrastructure.Middleware;
-using InvoiceService.Invoices.InvoiceEndpoints;
-using InvoiceService.Invoices.Repositories;
-using InvoiceService.Invoices.Services;
+using DocumentIngestion.Api.ExternalSystems;
+using DocumentIngestion.Api.Infrastructure.Middleware;
+using DocumentIngestion.Api.Invoices.InvoiceEndpoints;
+using DocumentIngestion.Api.Invoices.Repositories;
+using DocumentIngestion.Api.Invoices.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -19,7 +19,8 @@ public static class InvoiceMappings
             {
                 Description = l.Description,
                 Quantity = l.Quantity,
-                UnitPrice = l.UnitPrice
+                UnitPrice = l.UnitPrice,
+                Total = l.Total,
             })]
         };
     }

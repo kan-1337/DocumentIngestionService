@@ -1,7 +1,7 @@
 ﻿using DocumentIngestion.Api.Invoices.Models;
 using Shared.Common.Exceptions;
 
-namespace InvoiceService.Invoices.Repositories;
+namespace DocumentIngestion.Api.Invoices.Repositories;
 public class InMemoryInvoiceService : IInvoiceRepository
 {
     private readonly Dictionary<Guid, Invoice> _store = new();

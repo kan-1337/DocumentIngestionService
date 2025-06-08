@@ -1,7 +1,7 @@
 ﻿using DocumentIngestion.Api.ExternalSystems;
 using DocumentIngestion.Api.Invoices.Dtos;
 using DocumentIngestion.Api.Invoices.Models;
-using InvoiceService.Invoices.Repositories;
+using DocumentIngestion.Api.Invoices.Repositories;
 using Shared.Common.Exceptions;
 
 namespace DocumentIngestion.Api.Invoices.Services;
