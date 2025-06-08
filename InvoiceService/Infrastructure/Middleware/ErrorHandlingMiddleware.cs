@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Text.Json;
-using InvoiceService.Invoices.Models;
+﻿using InvoiceService.Invoices.Models;
 using Shared.Common.Exceptions;
 
 namespace InvoiceService.Infrastructure.Middleware;

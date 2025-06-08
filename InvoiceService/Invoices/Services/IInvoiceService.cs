@@ -16,5 +16,5 @@ public interface IInvoiceService
     /// </summary>
     /// <param name="id"></param>
     /// <returns>Returns an invoice object <see cref="Invoice"/></returns>
-    Task<Invoice?> GetByIdAsync(Guid id);
+    Task<Invoice> GetByIdAsync(Guid id);
 }

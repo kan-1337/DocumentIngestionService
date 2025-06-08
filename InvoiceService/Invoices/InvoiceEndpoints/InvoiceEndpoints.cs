@@ -25,12 +25,6 @@ public static class InvoiceEndpoints
         group.MapGet("/{id:guid}", async (Guid id, IInvoiceService service) =>
         {
             var invoice = await service.GetByIdAsync(id);
-
-            if (invoice is null)
-            {
-                return Results.NotFound(new { message = $"Invoice with ID '{id}' was not found." });
-            }
-
             var response = invoice.ToResponse();
             return Results.Ok(response);
         });

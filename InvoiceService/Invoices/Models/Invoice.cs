@@ -5,7 +5,7 @@ namespace InvoiceService.Invoices.Models;
 public class Invoice : EntityBase
 {
     public Guid SupplierId { get; set; }
-    public string InvoiceNumber { get; private set; }
+    public string InvoiceNumber { get; private set; } = null!;
     public DateTime InvoiceDate { get; private set; }
     public InvoiceStatus Status { get; private set; } = InvoiceStatus.Draft;
 
@@ -38,7 +38,7 @@ public class Invoice : EntityBase
 
     public void BookInvoice()
     {
-        if (!_lines.Any())
+        if (_lines.Count == 0)
         {
             throw new DomainValidationException("Cannot submit an invoice without line items");
         }

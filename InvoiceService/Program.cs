@@ -1,12 +1,14 @@
 using InvoiceService.Infrastructure.Middleware;
 using InvoiceService.Invoices.InvoiceEndpoints;
+using InvoiceService.Invoices.Repositories;
 using InvoiceService.Invoices.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IInvoiceService, InMemoryInvoiceService>();
+builder.Services.AddSingleton<IInvoiceRepository, InMemoryInvoiceService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceProcessingService>();
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 var app = builder.Build();

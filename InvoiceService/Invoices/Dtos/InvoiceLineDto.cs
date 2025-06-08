@@ -1,7 +1,7 @@
 ﻿namespace InvoiceService.Invoices.Dtos;
 public class InvoiceLineDto
 {
-    public string Description { get; set; } = default!;
+    public string? Description { get; set; }
 
     public int Quantity { get; set; }
 
