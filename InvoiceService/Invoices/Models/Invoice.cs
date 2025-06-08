@@ -3,6 +3,7 @@
 namespace InvoiceService.Invoices.Models;
 public class Invoice : EntityBase
 {
+    public Guid SupplierId { get; set; }
     public string InvoiceNumber { get; private set; }
     public DateTime InvoiceDate { get; private set; }
     public InvoiceStatus Status { get; private set; } = InvoiceStatus.Draft;
@@ -12,11 +13,15 @@ public class Invoice : EntityBase
 
     public decimal TotalAmount => _lines.Sum(l => l.Total);
 
-    public Invoice(string invoiceNumber, DateTime invoiceDate)
+    public Invoice(string invoiceNumber, Guid supplierId, DateTime invoiceDate)
     {
         if (string.IsNullOrWhiteSpace(invoiceNumber))
+        {
             throw new ArgumentException("Invoice number is required");
+        }
+
         InvoiceNumber = invoiceNumber;
+        SupplierId = supplierId;
         InvoiceDate = invoiceDate;
     }
 

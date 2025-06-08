@@ -1,4 +1,6 @@
 ﻿using InvoiceService.Invoices.Dtos;
+using InvoiceService.Invoices.Maping;
+using InvoiceService.Invoices.Services;
 
 namespace InvoiceService.Invoices.InvoiceEndpoints;
 public static class InvoiceEndpoints
@@ -7,24 +9,29 @@ public static class InvoiceEndpoints
     {
         var group = app.MapGroup("/invoices").WithTags("Invoices");
 
-        group.MapPost("/", (InvoiceDto dto) =>
+        group.MapPost("/", async (CreateInvoiceRequest dto, IInvoiceService service) =>
         {
-            if (string.IsNullOrWhiteSpace(dto.Number))
+            if (string.IsNullOrWhiteSpace(dto.InvoiceNumber) || dto.Lines.Count == 0)
             {
-                return Results.BadRequest(new { error = "Invoice number is required" });
+                return Results.BadRequest(new { message = "InvoiceNumber and at least one line are required." });
             }
 
-            dto.Id = Guid.NewGuid();
-            return Results.Ok(dto);
+            var id = await service.CreateInvoiceAsync(dto);
+            return Results.Created($"/invoices/{id}", new { id });
         });
 
-        group.MapGet("/{id:guid}", (Guid id) =>
+
+        group.MapGet("/{id:guid}", async (Guid id, IInvoiceService service) =>
         {
-            return Results.Ok(new InvoiceDto
+            var invoice = await service.GetByIdAsync(id);
+
+            if (invoice is null)
             {
-                Id = id,
-                Number = "TEST-123"
-            });
+                return Results.NotFound(new { message = $"Invoice with ID '{id}' was not found." });
+            }
+
+            var response = invoice.ToResponse();
+            return Results.Ok(response);
         });
     }
 }
