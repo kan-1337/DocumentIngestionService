@@ -1,4 +1,5 @@
-﻿using Shared.Common.Models;
+﻿using Shared.Common.Exceptions;
+using Shared.Common.Models;
 
 namespace InvoiceService.Invoices.Models;
 public class Invoice : EntityBase
@@ -17,7 +18,7 @@ public class Invoice : EntityBase
     {
         if (string.IsNullOrWhiteSpace(invoiceNumber))
         {
-            throw new ArgumentException("Invoice number is required");
+            throw new BadRequestException("Invoice number is required");
         }
 
         InvoiceNumber = invoiceNumber;
@@ -25,31 +26,31 @@ public class Invoice : EntityBase
         InvoiceDate = invoiceDate;
     }
 
-    public void AddLine(string description, int quantity, decimal unitPrice)
+    public void AddInvoiceLine(string description, int quantity, decimal unitPrice)
     {
-        if (Status != InvoiceStatus.Draft)
+        if (Status is not InvoiceStatus.Draft)
         {
-            throw new InvalidOperationException("Can only add lines to a draft invoice");
+            throw new DomainValidationException("Can only add lines to a draft invoice");
         }
 
         _lines.Add(new InvoiceLine(description, quantity, unitPrice));
     }
 
-    public void Submit()
+    public void BookInvoice()
     {
         if (!_lines.Any())
         {
-            throw new InvalidOperationException("Cannot submit an invoice without line items");
+            throw new DomainValidationException("Cannot submit an invoice without line items");
         }
 
-        Status = InvoiceStatus.Submitted;
+        Status = InvoiceStatus.Booked;
     }
 
     public void MarkAsPaid()
     {
-        if (Status != InvoiceStatus.Submitted)
+        if (Status is not InvoiceStatus.Booked)
         {
-            throw new InvalidOperationException("Only submitted invoices can be marked as paid");
+            throw new DomainValidationException("Only submitted invoices can be marked as paid");
         }
 
         Status = InvoiceStatus.Paid;

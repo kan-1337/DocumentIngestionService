@@ -9,15 +9,16 @@ public static class InvoiceEndpoints
     {
         var group = app.MapGroup("/invoices").WithTags("Invoices");
 
+        
         group.MapPost("/", async (CreateInvoiceRequest dto, IInvoiceService service) =>
         {
-            if (string.IsNullOrWhiteSpace(dto.InvoiceNumber) || dto.Lines.Count == 0)
+            if (dto.Lines == null || dto.Lines.Count == 0)
             {
-                return Results.BadRequest(new { message = "InvoiceNumber and at least one line are required." });
+                return Results.BadRequest(new { message = "At least one line item is required." });
             }
 
-            var id = await service.CreateInvoiceAsync(dto);
-            return Results.Created($"/invoices/{id}", new { id });
+            var invoiceId = await service.CreateInvoiceAsync(dto);
+            return Results.Created($"/invoices/{invoiceId}", new { invoiceId });
         });
 
 

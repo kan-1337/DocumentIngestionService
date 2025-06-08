@@ -4,10 +4,14 @@ using InvoiceService.Invoices.Models;
 namespace InvoiceService.Invoices.Dtos;
 public class CreateInvoiceRequest
 {
-    public string InvoiceNumber { get; set; } = default!;
-    public Guid SupplierId { get; set; }
-    public DateTime InvoiceDate { get; set; }
+    [Required] public string InvoiceNumber { get; set; } = default!;
+    [Required] public Guid SupplierId { get; set; }
+    [Required] public DateTime InvoiceDate { get; set; }
+    [Required]
+    [Range(0.01, double.MaxValue, ErrorMessage = "Total must be > 0")]
     public decimal TotalAmount { get; set; }
-    public string Currency { get; set; } = default!;
-    public List<InvoiceLineDto> Lines { get; set; } = new();
+    [Required] public string Currency { get; set; } = default!;
+    [Required]
+    [MinLength(1, ErrorMessage = "At least one line item required.")]
+    public List<InvoiceLineRequest> Lines { get; set; } = new();
 }

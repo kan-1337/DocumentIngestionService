@@ -2,8 +2,7 @@
 public enum InvoiceStatus
 {
     Draft = 0,
-    Submitted = 1,
-    Booked = 2,
-    Paid = 3,
-    Dunning = 4,
+    Booked = 1,
+    Paid = 2,
+    Dunning = 3,
 }

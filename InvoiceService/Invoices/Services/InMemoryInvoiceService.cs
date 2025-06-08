@@ -16,7 +16,7 @@ public class InMemoryInvoiceService : IInvoiceService
 
         foreach (var line in request.Lines)
         {
-            invoice.AddLine(line.Description, line.Quantity, line.UnitPrice);
+            invoice.AddInvoiceLine(line.Description, line.Quantity, line.UnitPrice);
         }
 
         _store[invoice.Id] = invoice;
