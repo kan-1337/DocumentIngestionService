@@ -27,7 +27,8 @@ jobs:
       - run: dotnet build --no-restore --configuration Release
 
       - name: Run Unit Tests
-        run: dotnet test DocumentIngestion.Unit.Tests/DocumentIngestion.Unit.Tests.csproj --framework net9.0 --no-build --verbosity normal
+        run: dotnet test DocumentIngestion.Unit.Tests/DocumentIngestion.Unit.Tests.csproj --framework net9.0 --verbosity normal
+
 
       - name: Run Integration Tests
         run: dotnet test DocumentIngestion.Integration.Tests/DocumentIngestion.Integration.Tests.csproj --framework net9.0 --no-build --verbosity normal
