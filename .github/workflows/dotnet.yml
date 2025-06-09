@@ -31,5 +31,5 @@ jobs:
 
 
       - name: Run Integration Tests
-        run: dotnet test DocumentIngestion.Integration.Tests/DocumentIngestion.Integration.Tests.csproj --framework net9.0 --no-build --verbosity normal
+        run: dotnet test DocumentIngestion.Integration.Tests/DocumentIngestion.Integration.Tests.csproj --framework net9.0 --verbosity normal
 
