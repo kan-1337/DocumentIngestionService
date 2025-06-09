@@ -11,7 +11,7 @@ public class InvoiceService  : IInvoiceService
     private readonly IExternalSystemClient _external;
     private readonly ILogger<InvoiceService > _logger;
 
-    public InvoiceService (IInvoiceRepository repo, IExternalSystemClient external, ILogger<InvoiceService > logger)
+    public InvoiceService (IInvoiceRepository repo, IExternalSystemClient external, ILogger<InvoiceService> logger)
     {
         _repo = repo;
         _external = external;

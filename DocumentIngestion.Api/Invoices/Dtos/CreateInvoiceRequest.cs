@@ -16,5 +16,5 @@ public class CreateInvoiceRequest
 
     [Required]
     [MinLength(1, ErrorMessage = "At least one line item required.")]
-    public List<InvoiceLineRequest> Lines { get; set; } = [];
+    public List<CreateInvoiceLineRequest> Lines { get; set; } = [];
 }

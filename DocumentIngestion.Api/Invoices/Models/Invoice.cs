@@ -8,7 +8,6 @@ public class Invoice : EntityBase
     public string InvoiceNumber { get; private set; }
     public DateTime InvoiceDate { get; private set; }
     public InvoiceStatus Status { get; private set; } = InvoiceStatus.Draft;
-
     public string Currency { get; private set; } = default!;
 
     private readonly List<InvoiceLine> _lines = [];
