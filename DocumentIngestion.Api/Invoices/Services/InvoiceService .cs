@@ -20,10 +20,12 @@ public class InvoiceService  : IInvoiceService
 
     public async Task<Guid> CreateInvoiceAsync(CreateInvoiceRequest dto)
     {
+        await ValidateInvoiceRequest(dto);
+
         var invoice = new Invoice(
-                    invoiceNumber: dto.InvoiceNumber, 
-                    supplierId: dto.SupplierId, 
-                    invoiceDate: dto.InvoiceDate, 
+                    invoiceNumber: dto.InvoiceNumber,
+                    supplierId: dto.SupplierId,
+                    invoiceDate: dto.InvoiceDate,
                     currency: dto.Currency);
 
         foreach (var line in dto.Lines)
@@ -52,10 +54,31 @@ public class InvoiceService  : IInvoiceService
         return invoice.Id;
     }
 
+
     public async Task<Invoice> GetByIdAsync(Guid id)
     {
         var invoice = await _repo.GetByIdAsync(id);
 
         return invoice is null ? throw new NotFoundException<Invoice, Guid>(id) : invoice;
+    }
+
+    /// <summary>
+    ///  Validates the uniqueness of the invoice number + supplier id, and if supplier id is valid.
+    /// </summary>
+    /// <param name="dto"><see cref="CreateInvoiceRequest"/> Dto model to create invoice, needs to be validated.</param>
+    /// <exception cref="BadRequestException">Exception is thrown if invalid</exception>
+    private async Task ValidateInvoiceRequest(CreateInvoiceRequest dto)
+    {
+        if (dto.SupplierId == Guid.Empty)
+        {
+            throw new BadRequestException("Must provide a supplier id");
+        }
+
+        var supplierInvoiceExists = await _repo.GetByInvoiceNumberAsync(dto.InvoiceNumber, dto.SupplierId);
+
+        if (supplierInvoiceExists)
+        {
+            throw new BadRequestException($"Invoice number {dto.InvoiceNumber} and {dto.SupplierId} must be unique.");
+        }
     }
 }
