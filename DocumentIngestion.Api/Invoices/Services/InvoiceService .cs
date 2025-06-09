@@ -20,7 +20,11 @@ public class InvoiceService  : IInvoiceService
 
     public async Task<Guid> CreateInvoiceAsync(CreateInvoiceRequest dto)
     {
-        var invoice = new Invoice(dto.InvoiceNumber, dto.SupplierId, dto.InvoiceDate);
+        var invoice = new Invoice(
+                    invoiceNumber: dto.InvoiceNumber, 
+                    supplierId: dto.SupplierId, 
+                    invoiceDate: dto.InvoiceDate, 
+                    currency: dto.Currency);
 
         foreach (var line in dto.Lines)
         {
@@ -52,11 +56,6 @@ public class InvoiceService  : IInvoiceService
     {
         var invoice = await _repo.GetByIdAsync(id);
 
-        if (invoice is null)
-        { 
-            throw new NotFoundException<Invoice, Guid>(id); 
-        }
-
-        return invoice;
+        return invoice is null ? throw new NotFoundException<Invoice, Guid>(id) : invoice;
     }
 }

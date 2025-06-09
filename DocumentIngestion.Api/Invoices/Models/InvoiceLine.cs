@@ -1,27 +1,25 @@
-﻿namespace DocumentIngestion.Api.Invoices.Models;
+﻿using Shared.Common.Exceptions;
+
+namespace DocumentIngestion.Api.Invoices.Models;
 public class InvoiceLine
 {
-    public string Description { get; }
+    public string? Description { get; }
     public int Quantity { get; }
     public decimal UnitPrice { get; }
     public decimal Total => Quantity * UnitPrice;
 
-    public InvoiceLine(string description, int quantity, decimal unitPrice)
+    public InvoiceLine(string? description, int quantity, decimal unitPrice)
     {
-        if (string.IsNullOrWhiteSpace(description))
+        if (quantity < 0)
         {
-            throw new ArgumentNullException("description");
-        }
-        if (quantity <= 0)
-        {
-            throw new ArgumentOutOfRangeException("Quantity must be positive");
+            throw new BadRequestException("Quantity cannot be negative.");
         }
         if (unitPrice < 0)
         {
-            throw new ArgumentOutOfRangeException("Unit price cannot be negative");
+            throw new BadRequestException("Unit price cannot be negative.");
         }
 
-        Description = description;
+        Description = description is not null ? description : "";
         Quantity = quantity;
         UnitPrice = unitPrice;
     }

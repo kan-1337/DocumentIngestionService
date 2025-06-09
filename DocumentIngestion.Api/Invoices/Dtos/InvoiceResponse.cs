@@ -7,5 +7,5 @@ public record class InvoiceResponse
     public DateTime InvoiceDate { get; init; }
     public decimal TotalAmount { get; init; }
     public string Currency { get; init; } = null!;
-    public List<InvoiceLineResponse> Lines { get; init; } = new();
+    public List<InvoiceLineResponse> Lines { get; init; } = [];
 }

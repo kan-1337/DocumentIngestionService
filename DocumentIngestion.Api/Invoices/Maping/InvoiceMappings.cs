@@ -13,7 +13,7 @@ public static class InvoiceMappings
             SupplierId = invoice.SupplierId,
             InvoiceDate = invoice.InvoiceDate,
             TotalAmount = invoice.TotalAmount,
-            Currency = "DKK",
+            Currency = !string.IsNullOrWhiteSpace(invoice.Currency) ? invoice.Currency : "DKK", // Should probably not be null or empty, but default to DKK if it is for demonstration purposes
 
             Lines = [.. invoice.Lines.Select(l => new InvoiceLineResponse
             {
