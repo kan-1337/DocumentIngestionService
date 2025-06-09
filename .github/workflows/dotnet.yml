@@ -17,12 +17,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install .NET 9 preview manually
+    - name: Install .NET 9 preview
       run: |
-        DOTNET_VERSION=9.0.100-preview.4.24266.11
-        wget https://dotnetcli.azureedge.net/dotnet/Sdk/$DOTNET_VERSION/dotnet-sdk-$DOTNET_VERSION-linux-x64.tar.gz
+        wget https://dotnetcli.azureedge.net/dotnet/Sdk/<new-version>/dotnet-sdk-<new-version>-linux-x64.tar.gz
         mkdir -p $HOME/dotnet
-        tar zxf dotnet-sdk-$DOTNET_VERSION-linux-x64.tar.gz -C $HOME/dotnet
+        tar zxf dotnet-sdk-<new-version>-linux-x64.tar.gz -C $HOME/dotnet
         echo "$HOME/dotnet" >> $GITHUB_PATH
         echo "DOTNET_ROOT=$HOME/dotnet" >> $GITHUB_ENV
 
