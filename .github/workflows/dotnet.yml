@@ -17,13 +17,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install .NET 9 preview
-      run: |
-        wget https://dotnetcli.azureedge.net/dotnet/Sdk/v/dotnet-sdk-9.0.100-preview.7-linux-x64.tar.gz
-        mkdir -p $HOME/dotnet
-        tar zxf dotnet-sdk-9.0.100-preview.7-linux-x64.tar.gz -C $HOME/dotnet
-        echo "$HOME/dotnet" >> $GITHUB_PATH
-        echo "DOTNET_ROOT=$HOME/dotnet" >> $GITHUB_ENV
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.100-preview.7'
 
     - name: Verify .NET SDK Version
       run: dotnet --version
