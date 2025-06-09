@@ -1,11 +1,8 @@
-﻿
-using DocumentIngestion.Api.Invoices.Dtos;
-using DocumentIngestion.Api.Invoices.Models;
+﻿using DocumentIngestion.Api.Invoices.Dtos;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using System.Net.Http.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DocumentIngestion.Integration.Tests
 {
