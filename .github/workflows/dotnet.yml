@@ -19,9 +19,9 @@ jobs:
 
     - name: Install .NET 9 preview
       run: |
-        wget https://dotnetcli.azureedge.net/dotnet/Sdk/<new-version>/dotnet-sdk-<new-version>-linux-x64.tar.gz
+        wget https://dotnetcli.azureedge.net/dotnet/Sdk/v/dotnet-sdk-9.0.100-preview.7-linux-x64.tar.gz
         mkdir -p $HOME/dotnet
-        tar zxf dotnet-sdk-<new-version>-linux-x64.tar.gz -C $HOME/dotnet
+        tar zxf dotnet-sdk-9.0.100-preview.7-linux-x64.tar.gz -C $HOME/dotnet
         echo "$HOME/dotnet" >> $GITHUB_PATH
         echo "DOTNET_ROOT=$HOME/dotnet" >> $GITHUB_ENV
 
