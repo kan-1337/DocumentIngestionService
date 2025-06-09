@@ -31,3 +31,5 @@ app.UseHttpsRedirection();
 
 
 app.Run();
+
+public partial class Program { }// This partial class is necessary for the integration tests to work correctly.
