@@ -126,7 +126,7 @@ namespace DocumentIngestion.Integration.Tests
             var error = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
 
             error.Should().NotBeNull();
-            error["error"].Should().Be("The Supplier ID is required for processing.");
+            error["error"].Should().Be("Must provide a supplier id");
         }
     }
 }
