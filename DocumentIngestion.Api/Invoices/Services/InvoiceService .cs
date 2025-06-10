@@ -82,17 +82,3 @@ public class InvoiceService  : IInvoiceService
         }
     }
 }
-
-
-
-[Flags]
-public enum NotificationHandler : short
-{
-    None = 0,
-    NotifySupplier = 1,
-    NotifyPaymentService = 2,
-    NotifyEmailService = 4,
-    NotifyCustomerService = 8,
-    NotifyBookingService = 16,
-    NotifyAll = NotifySupplier | NotifyPaymentService | NotifyEmailService | NotifyCustomerService
-}
