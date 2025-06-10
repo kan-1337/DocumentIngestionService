@@ -1,5 +1,8 @@
 # DocumentIngestionService
 
+rdme docs (for fun)
+https://test-mrsb.readme.io/reference/createinvoice#/
+
 ## Table of Content
 - [How to Run](#how-to-run)
 - [Architecture](#architecture)
