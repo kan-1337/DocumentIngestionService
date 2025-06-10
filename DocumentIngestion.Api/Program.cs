@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IInvoiceRepository, InMemoryInvoiceService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddSingleton<IExternalSystemClient, FakeExternalSystemClient>();
-
+builder.Services.AddOpenApi();
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 var app = builder.Build();
@@ -22,6 +22,8 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.MapOpenApi();
+    app.MapOpenApi("/openapi/v1.yaml");
     app.UseSwagger();
     app.UseSwaggerUI();
 }
