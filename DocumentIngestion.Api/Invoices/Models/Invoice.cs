@@ -32,7 +32,7 @@ public class Invoice : EntityBase
 
         InvoiceNumber = invoiceNumber;
         SupplierId = supplierId;
-        InvoiceDate = invoiceDate;
+        InvoiceDate = invoiceDate == default ? DateTime.UtcNow : invoiceDate; // Or make it optional and throw if null
         Currency = !string.IsNullOrWhiteSpace(currency) ? currency : ""; // Real world solutions might default to whatever currency customer has or product, etc 
     }
 

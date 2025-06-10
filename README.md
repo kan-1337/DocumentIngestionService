@@ -36,10 +36,14 @@ dotnet test
 This is a relatively simple demonstration application which should be enough to showcase theoretically a real world scenario.  
 I've used some inspirations both from my past experience working with something similar, and some personal projects I've worked on. 
 For preparation I have used Articles, videos and sparring with chatgpt, regarding some of the design decisions, pros and cons of some architectures, etc.
+- [How to Run](#how-to-run)
+- [Architecture](#architecture)
+- [Tests](#tests)
 
-The app simply receives a post request and a get request, I picked minimal API because I believed it would make sense in a smaller more contained project, since then
-I might have some reservations, mostly just because the functionality for data annotations seems to be missing, not a big deal for this project, but it's something to keep in mind
 
+---
+
+## Endpoints
 The application exposes two main endpoints:
 * POST /invoices to submit invoice data
 * GET /invoices/{id} to retrieve a specific invoice
@@ -60,3 +64,16 @@ Here are some links and articles for best practices, and examples, including my 
 
 [My old project](https://github.com/kan-1337/MicroServices)
 
+---
+
+## Architecture
+
+---
+
+## About
+This is a relatively simple demonstration application which should be enough to showcase theoretically a real world scenario.  
+I've used some inspirations both from my past experience working with something similar, and some personal projects I've worked on. 
+For preparation I have used Articles, videos and sparring with chatgpt, regarding some of the design decisions, pros and cons of some architectures, etc.
+
+The app simply receives a post request and a get request, I picked minimal API because I believed it would make sense in a smaller more contained project, since then
+I might have some reservations, mostly just because the functionality for data annotations seems to be missing, not a big deal for this project, but it's something to keep in mind
