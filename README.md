@@ -1,5 +1,10 @@
 # DocumentIngestionService
 
+## Table of Content
+- [How to Run](#how-to-run)
+- [Architecture](#architecture)
+- [Tests](#tests)
+
 ## How to run: 
 
 ### Navigate to source location:
@@ -46,26 +51,12 @@ cd path/to/DocumentIngestionService
 ### Run:
 dotnet test
 
-##
-
-## About
-This is a relatively simple demonstration application which should be enough to showcase theoretically a real world scenario.  
-I've used some inspirations both from my past experience working with something similar, and some personal projects I've worked on. 
-For preparation I have used Articles, videos and sparring with chatgpt, regarding some of the design decisions, pros and cons of some architectures, etc.
-- [How to Run](#how-to-run)
-- [Architecture](#architecture)
-- [Tests](#tests)
-
-
 ---
 
 ## Endpoints
 The application exposes two main endpoints:
 * POST /invoices to submit invoice data
 * GET /invoices/{id} to retrieve a specific invoice
-
-
-##
 
 ## Inspirations
 
