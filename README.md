@@ -21,6 +21,24 @@ dotnet run --launch-profile https
 * https://localhost:7227/invoices (For post requests)
 * https://localhost:7227/invoices/guid (For getbyid request)
 
+### Request example for post
+
+```
+{
+  "invoiceNumber": "string",
+  "supplierId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "invoiceDate": "2025-06-10T08:07:27.128Z",
+  "currency": "string",
+  "lines": [
+    {
+      "description": "string",
+      "quantity": 0,
+      "unitPrice": 0
+    }
+  ]
+}
+```
+
 ### For tests:
 Navigate to solution root
 cd path/to/DocumentIngestionService
