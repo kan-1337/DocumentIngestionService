@@ -29,7 +29,15 @@ jobs:
       - name: Run Unit Tests
         run: dotnet test DocumentIngestion.Unit.Tests/DocumentIngestion.Unit.Tests.csproj --framework net9.0 --verbosity normal
 
-
       - name: Run Integration Tests
         run: dotnet test DocumentIngestion.Integration.Tests/DocumentIngestion.Integration.Tests.csproj --framework net9.0 --verbosity normal
-
+  sync-to-readme:
+      needs: build-and-test
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+  
+        - name: Sync OpenAPI spec to ReadMe
+          uses: readmeio/rdme@v10
+          with:
+            rdme: openapi upload src/DocumentIngestion.Api/openapi.yaml --key=${{ secrets.README_API_KEY }}
