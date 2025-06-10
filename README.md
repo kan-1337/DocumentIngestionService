@@ -1,7 +1,5 @@
 # DocumentIngestionService
 
-##
-
 ## How to run: 
 
 ### Navigate to source location:
@@ -56,6 +54,7 @@ The application exposes two main endpoints:
 Here are some links and articles for best practices, and examples, including my own git repo from a small project I've made.
 
 ###Links
+
 [MicroService architecture explained](https://vfunction.com/blog/net-microservices-architecture/)
 
 [Best practice](https://medium.com/%40xperturesolutions/best-practices-for-microservices-in-net-cc3005803005)
@@ -67,7 +66,7 @@ Here are some links and articles for best practices, and examples, including my 
 ---
 
 ## Architecture
-
+![Architecture Diagram](https://github.com/kan-1337/DocumentIngestionService/blob/master/DocumentIngestionArchitectureDiagram.jpg)
 ---
 
 ## About
