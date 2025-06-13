@@ -6,7 +6,6 @@ https://test-mrsb.readme.io/reference/createinvoice#/
 ## Table of Content
 - [How to Run](#how-to-run)
 - [Architecture](#architecture)
-- [Tests](#tests)
 - [Dependabot](#dependabot)
 - [CI/CD](#cicd)
 
@@ -76,7 +75,7 @@ This project uses **Dependabot** to keep dependencies up to date:
 
 ## Cicd
 
-![.NET CI](https://img.shields.io/github/actions/workflow/status/<your-org>/<your-repo>/.github/workflows/dotnet-ci.yml?branch=main)
+![.NET CI](https://github.com/kan-1337/DocumentIngestionService/actions/workflows/dotnet-ci.yml/badge.svg?branch=main)
 
 ### CI/CD 
 
