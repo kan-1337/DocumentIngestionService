@@ -75,7 +75,10 @@ This project uses **Dependabot** to keep dependencies up to date:
 
 ## Cicd
 
-![.NET CI](https://github.com/kan-1337/DocumentIngestionService/actions/workflows/dotnet-ci.yml/badge.svg?branch=main)
+[![.NET CI](https://github.com/kan-1337/DocumentIngestionService/workflows/.NET%20CI/badge.svg)](https://github.com/kan-1337/DocumentIngestionService/actions/workflows/dotnet-ci.yml)
+
+
+
 
 ### CI/CD 
 
