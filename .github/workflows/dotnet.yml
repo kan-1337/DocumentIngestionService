@@ -1,5 +1,9 @@
 name: .NET CI
 
+permissions:
+  contents: read
+  secrets: read
+
 on:
   pull_request:
     branches: ["dev", "master"]
