@@ -1,7 +1,7 @@
 name: .NET CI
 
 permissions:
-  contents: read
+  contents: write # Allow the workflow to write to the repository contents, necessary for committing OpenAPI spec
 
 on:
   pull_request:
@@ -16,10 +16,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup .NET SDK matching global.json
+      - name: Setup .NET SDK matching global.json and cache NuGet packages
         uses: actions/setup-dotnet@v4
         with:
           global-json-file: "./global.json"
+          cache: true
+          cache-dependency-path: '**/packages.lock.json'
 
       - name: Display .NET version
         run: dotnet --version
@@ -36,7 +38,6 @@ jobs:
       - name: Run integration tests
         run: dotnet test DocumentIngestion.Integration.Tests/DocumentIngestion.Integration.Tests.csproj --framework net9.0 --verbosity normal
 
-      # Use local Swashbuckle tool (NOT global)
       - name: Restore local tools
         working-directory: DocumentIngestion.Api
         run: dotnet tool restore
@@ -44,6 +45,18 @@ jobs:
       - name: Export OpenAPI spec
         working-directory: DocumentIngestion.Api
         run: dotnet swagger tofile --output openapi.yaml ./bin/Release/net9.0/DocumentIngestion.Api.dll v1
+
+      # --- AUTO-COMMIT OPENAPI.YAML TO REPO ---
+      - name: Commit and push OpenAPI file
+        working-directory: DocumentIngestion.Api
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add openapi.yaml
+          git commit -m "Update OpenAPI spec [ci skip]" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   sync-to-readme:
     needs: build-and-test
