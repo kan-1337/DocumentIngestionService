@@ -1,16 +1,17 @@
-using DocumentIngestion.Api.ExternalSystems;
+using DocumentIngestion.Api.Infrastructure.DependencyInjection;
 using DocumentIngestion.Api.Infrastructure.Middleware;
 using DocumentIngestion.Api.Invoices.InvoiceEndpoints;
-using DocumentIngestion.Api.Invoices.Repositories;
-using DocumentIngestion.Api.Invoices.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IInvoiceRepository, InMemoryInvoiceService>();
-builder.Services.AddScoped<IInvoiceService, InvoiceService>();
-builder.Services.AddSingleton<IExternalSystemClient, FakeExternalSystemClient>();
+builder.Services.AddEndpointsApiExplorer();
+// Add custom Swagger configuration
+builder.Services.AddCustomSwagger();
+// Add services to the container.
+builder.Services.AddInvoiceServicesAndRepositories();
+
 builder.Services.AddOpenApi();
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();

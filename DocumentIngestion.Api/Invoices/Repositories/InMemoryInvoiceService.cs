@@ -30,4 +30,15 @@ public class InMemoryInvoiceService : IInvoiceRepository
         var invoiceExists = _store.Values.Any(x => x.SupplierId == supplierId && x.InvoiceNumber == invoiceNumber);
         return Task.FromResult(invoiceExists);
     }
+
+    public Task<Invoice> UpdateAsync(Invoice invoice)
+    {
+        if (!_store.ContainsKey(invoice.Id))
+        {
+            throw new NotFoundException<Invoice, Guid>(invoice.Id);
+        }
+
+        _store[invoice.Id] = invoice;
+        return Task.FromResult(_store[invoice.Id]);
+    }
 }

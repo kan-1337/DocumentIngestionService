@@ -1,5 +1,6 @@
 ﻿using DocumentIngestion.Api.ExternalSystems;
 using DocumentIngestion.Api.Invoices.Dtos;
+using DocumentIngestion.Api.Invoices.Maping;
 using DocumentIngestion.Api.Invoices.Models;
 using DocumentIngestion.Api.Invoices.Repositories;
 using Shared.Common.Exceptions;
@@ -54,12 +55,48 @@ public class InvoiceService  : IInvoiceService
         return invoice.Id;
     }
 
-
-    public async Task<Invoice> GetByIdAsync(Guid id)
+    public async Task<InvoiceResponse> ExportInvoiceAsync(Guid id)
     {
         var invoice = await _repo.GetByIdAsync(id);
 
-        return invoice is null ? throw new NotFoundException<Invoice, Guid>(id) : invoice;
+        if (invoice == null)
+        {
+            throw new NotFoundException<Invoice, Guid>(id);
+        }
+
+        if (invoice.InvoiceExportStatus == InvoiceExportStatus.Exported)
+        {
+            throw new ExportErrorMessage("Invoice has already been exported.");
+        }
+
+        try
+        {
+            invoice.InvoiceExportStatus = InvoiceExportStatus.Exporting;
+            await _repo.UpdateAsync(invoice);
+
+            await _external.ExportAsync(invoice);
+
+            invoice.InvoiceExportStatus = InvoiceExportStatus.Exported;
+            invoice.ExportedAt = DateTime.UtcNow;
+            invoice.ExportErrorMessage = null;
+            await _repo.UpdateAsync(invoice);
+        }
+        catch (Exception ex)
+        {
+            invoice.InvoiceExportStatus = InvoiceExportStatus.ExportFailed;
+            invoice.ExportErrorMessage = ex.Message;
+            await _repo.UpdateAsync(invoice);
+            throw;
+        }
+
+        return invoice.ToResponse();
+    }
+
+    public async Task<InvoiceResponse> GetByIdAsync(Guid id)
+    {
+        var invoice = await _repo.GetByIdAsync(id);
+
+        return invoice is null ? throw new NotFoundException<Invoice, Guid>(id) : invoice.ToResponse();
     }
 
     /// <summary>
