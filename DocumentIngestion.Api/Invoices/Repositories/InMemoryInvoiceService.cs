@@ -25,6 +25,11 @@ public class InMemoryInvoiceService : IInvoiceRepository
         return Task.FromResult(invoice);
     }
 
+    public Task<List<Invoice>> GetAllAsync()
+    {
+        return Task.FromResult(_store.Values.ToList());
+    }
+
     public Task<bool> GetByInvoiceNumberAsync(string invoiceNumber, Guid supplierId)
     {
         var invoiceExists = _store.Values.Any(x => x.SupplierId == supplierId && x.InvoiceNumber == invoiceNumber);
