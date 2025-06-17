@@ -1,4 +1,6 @@
-﻿namespace DocumentIngestion.Api.ExternalSystems;
+﻿using DocumentIngestion.Api.Invoices.Models;
+
+namespace DocumentIngestion.Api.ExternalSystems;
 public class FakeExternalSystemClient : IExternalSystemClient
 {
     private readonly ILogger<FakeExternalSystemClient> _logger;
@@ -23,6 +25,12 @@ public class FakeExternalSystemClient : IExternalSystemClient
     public async Task NotifyPaymentServiceAsync(Guid invoiceId, decimal amount)
     {
         _logger.LogInformation("Notifying payment service for invoice {InvoiceId} with amount {Amount}...", invoiceId, amount);
+        await Task.Delay(500);
+    }
+
+    public async Task ExportAsync(Invoice invoice)
+    {
+        _logger.LogInformation("Exporting invoice {InvoiceId} with total amount {TotalAmount}...", invoice.Id, invoice.TotalAmount);
         await Task.Delay(500);
     }
 }

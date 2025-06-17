@@ -14,7 +14,7 @@ public static class InvoiceMappings
             InvoiceDate = invoice.InvoiceDate,
             TotalAmount = invoice.TotalAmount,
             Currency = !string.IsNullOrWhiteSpace(invoice.Currency) ? invoice.Currency : "DKK", // Should probably not be null or empty, but default to DKK if it is for demonstration purposes
-
+            InvoiceExportStatus = invoice.InvoiceExportStatus,
             Lines = [.. invoice.Lines.Select(l => new InvoiceLineResponse
             {
                 Description = l.Description,
