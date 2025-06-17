@@ -21,7 +21,7 @@ public static class InvoiceEndpoints
             var invoiceId = await service.CreateInvoiceAsync(dto);
             return Results.Created($"/invoices/{invoiceId}", new { invoiceId });
         }).WithName("CreateInvoice")
-            .WithSummary("Creates a new response")
+            .WithSummary("Creates a new Invoice")
             .WithDescription("Creates a new draft response.")
             .Produces(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
@@ -34,6 +34,15 @@ public static class InvoiceEndpoints
             return Results.Ok(response);
         }).WithName("GetById")
             .WithSummary("Gets an response by response id.")
+            .WithOpenApi(operation =>
+            {
+                var idParam = operation.Parameters.FirstOrDefault(p => p.Name == "id");
+                if (idParam != null)
+                {
+                    idParam.Description = "Unique identifier for the invoice (Guid)";
+                }
+                return operation;
+            })
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
 
@@ -42,7 +51,7 @@ public static class InvoiceEndpoints
             var response = await service.ExportInvoiceAsync(id);
             return Results.Ok(response);
         }).WithName("ExportInvoice")
-            .WithSummary("Exports an invoice to external syste")
+            .WithSummary("Exports an invoice to external system")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status404NotFound)
