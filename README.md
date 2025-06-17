@@ -1,9 +1,13 @@
 # DocumentIngestionService
 
+rdme docs (for fun)
+https://test-mrsb.readme.io/reference/createinvoice#/
+
 ## Table of Content
 - [How to Run](#how-to-run)
 - [Architecture](#architecture)
-- [Tests](#tests)
+- [Dependabot](#dependabot)
+- [CI/CD](#cicd)
 
 ## How to run: 
 
@@ -57,6 +61,28 @@ dotnet test
 The application exposes two main endpoints:
 * POST /invoices to submit invoice data
 * GET /invoices/{id} to retrieve a specific invoice
+
+## Dependabot
+
+![Dependabot](https://img.shields.io/badge/Dependabot-enabled-brightgreen)
+
+This project uses **Dependabot** to keep dependencies up to date:
+
+- Weekly updates for NuGet packages  
+- Monthly check for the .NET SDK  
+- Pull requests created automatically after passing CI  
+- Just tag `@dependabot rebase` or `@dependabot merge` to manage updates
+
+## Cicd
+
+[![.NET CI](https://github.com/kan-1337/DocumentIngestionService/workflows/.NET%20CI/badge.svg)](https://github.com/kan-1337/DocumentIngestionService/actions/workflows/dotnet-ci.yml)
+
+
+
+
+### CI/CD 
+
+Builds project, Runs automatic tests, both unit and integration tests.  Make sure we need to confirm PRs, have others look at them, etc. 
 
 ## Inspirations
 

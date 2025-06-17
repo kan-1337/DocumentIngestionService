@@ -1,0 +1,18 @@
+version: 2
+updates:
+  # Update NuGet package dependencies
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+
+  # Update .NET SDK itself
+  - package-ecosystem: "dotnet-sdk"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
