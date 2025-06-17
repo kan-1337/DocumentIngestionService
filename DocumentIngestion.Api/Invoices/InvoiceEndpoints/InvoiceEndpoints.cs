@@ -64,7 +64,7 @@ public static class InvoiceEndpoints
                 [FromQuery] int page,
                 [FromQuery] int pageSize,
                 [FromQuery] Guid? supplierId,
-                [FromQuery] string? status,
+                [FromQuery] InvoiceExportStatus? status,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? to,
                 IInvoiceService service) =>
@@ -73,6 +73,7 @@ public static class InvoiceEndpoints
                 return Results.BadRequest(new { message = "Page and pageSize must be greater than 0." });
 
             var result = await service.GetPagedAsync(page, pageSize, supplierId, status, from, to);
+
             return Results.Ok(result);
         }).WithName("ListInvoices")
             .WithSummary("Lists all invoices with optional filtering and pagination.")

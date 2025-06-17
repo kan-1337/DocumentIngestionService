@@ -49,7 +49,7 @@ public interface IInvoiceService
         int page,
         int pageSize,
         Guid? supplierId,
-        string? status,
+        InvoiceExportStatus? status,
         DateTime? from,
         DateTime? to);
 }
