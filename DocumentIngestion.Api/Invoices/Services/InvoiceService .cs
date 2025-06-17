@@ -98,8 +98,8 @@ public class InvoiceService  : IInvoiceService
     public async Task<PagedResult<InvoiceResponse>> GetPagedAsync(
                             int page, 
                             int pageSize, 
-                            Guid? supplierId, 
-                            string? status, 
+                            Guid? supplierId,
+                            InvoiceExportStatus? status, 
                             DateTime? from, 
                             DateTime? to)
     {
@@ -121,9 +121,9 @@ public class InvoiceService  : IInvoiceService
             query = query.Where(x => x.SupplierId == supplierId.Value);
         }
 
-        if (!string.IsNullOrEmpty(status))
+        if (status.HasValue)
         {
-            query = query.Where(x => x.InvoiceExportStatus.ToString().Equals(status, StringComparison.OrdinalIgnoreCase));
+            query = query.Where(x => x.InvoiceExportStatus == status);
         }
 
         if (from.HasValue)
