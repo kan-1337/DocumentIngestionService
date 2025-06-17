@@ -2,6 +2,8 @@
 using DocumentIngestion.Api.Invoices.Maping;
 using DocumentIngestion.Api.Invoices.Models;
 using DocumentIngestion.Api.Invoices.Services;
+using Microsoft.AspNetCore.Mvc;
+using Shared.Common.Models;
 
 namespace DocumentIngestion.Api.Invoices.InvoiceEndpoints;
 public static class InvoiceEndpoints
@@ -55,6 +57,27 @@ public static class InvoiceEndpoints
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status500InternalServerError);
+
+        group.MapGet("/", async (
+                [FromQuery] int page,
+                [FromQuery] int pageSize,
+                [FromQuery] Guid? supplierId,
+                [FromQuery] string? status,
+                [FromQuery] DateTime? from,
+                [FromQuery] DateTime? to,
+                IInvoiceService service) =>
+        {
+            if (page < 1 || pageSize < 1)
+                return Results.BadRequest(new { message = "Page and pageSize must be greater than 0." });
+
+            var result = await service.GetPagedAsync(page, pageSize, supplierId, status, from, to);
+            return Results.Ok(result);
+        }).WithName("ListInvoices")
+            .WithSummary("Lists all invoices with optional filtering and pagination.")
+            .WithDescription("Retrieves a paginated list of invoices with optional filtering by supplier, status, and date range.")
+            .Produces<PagedResult<InvoiceResponse>>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError);
     }

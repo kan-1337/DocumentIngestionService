@@ -4,6 +4,7 @@ using DocumentIngestion.Api.Invoices.Maping;
 using DocumentIngestion.Api.Invoices.Models;
 using DocumentIngestion.Api.Invoices.Repositories;
 using Shared.Common.Exceptions;
+using Shared.Common.Models;
 
 namespace DocumentIngestion.Api.Invoices.Services;
 public class InvoiceService  : IInvoiceService
@@ -92,6 +93,66 @@ public class InvoiceService  : IInvoiceService
         var invoice = await _repo.GetByIdAsync(id);
 
         return invoice is null ? throw new NotFoundException<Invoice, Guid>(id) : invoice.ToResponse();
+    }
+
+    public async Task<PagedResult<InvoiceResponse>> GetPagedAsync(
+                            int page, 
+                            int pageSize, 
+                            Guid? supplierId, 
+                            string? status, 
+                            DateTime? from, 
+                            DateTime? to)
+    {
+        if (page < 1)
+        {
+            throw new DomainValidationException("Page number must be at least 1.");
+        }
+        if (pageSize < 1 || pageSize > 100)
+        {
+            throw new DomainValidationException("Page size must be between 1 and 100.");
+        }
+
+        var allInvoices = await _repo.GetAllAsync();
+
+        IEnumerable<Invoice> query = allInvoices;
+
+        if (supplierId.HasValue)
+        {
+            query = query.Where(x => x.SupplierId == supplierId.Value);
+        }
+
+        if (!string.IsNullOrEmpty(status))
+        {
+            query = query.Where(x => x.InvoiceExportStatus.ToString().Equals(status, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (from.HasValue)
+        {
+            query = query.Where(x => x.InvoiceDate >= from.Value);
+        }
+
+        if (to.HasValue)
+        {
+            query = query.Where(x => x.InvoiceDate <= to.Value);
+        }
+
+        var totalCount = query.Count();
+
+        var paged = query
+            .OrderByDescending(x => x.InvoiceDate)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var pagedResponses = paged.Select(x => x.ToResponse()).ToList();
+
+        return new PagedResult<InvoiceResponse>
+        {
+            Items = pagedResponses,
+            TotalCount = totalCount,
+            Page = page,
+            PageSize = pageSize
+        };
     }
 
     /// <summary>
