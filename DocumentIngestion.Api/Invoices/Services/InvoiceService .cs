@@ -57,12 +57,7 @@ public class InvoiceService  : IInvoiceService
 
     public async Task<InvoiceResponse> ExportInvoiceAsync(Guid id)
     {
-        var invoice = await _repo.GetByIdAsync(id);
-
-        if (invoice == null)
-        {
-            throw new NotFoundException<Invoice, Guid>(id);
-        }
+        var invoice = await _repo.GetByIdAsync(id) ?? throw new NotFoundException<Invoice, Guid>(id);
 
         if (invoice.InvoiceExportStatus == InvoiceExportStatus.Exported)
         {
