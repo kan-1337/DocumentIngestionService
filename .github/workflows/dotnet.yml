@@ -2,7 +2,6 @@ name: .NET CI
 
 permissions:
   contents: read
-  secrets: read
 
 on:
   pull_request:
@@ -11,35 +10,49 @@ on:
     branches: ["dev", "master"]
 
 jobs:
-    build-and-test:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup .NET SDK matching global.json
         uses: actions/setup-dotnet@v4
         with:
           global-json-file: "./global.json"
+
       - name: Display .NET version
         run: dotnet --version
-      - run: dotnet restore
-      - run: dotnet build --no-restore --configuration Release
-      - name: Run Unit Tests
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Run unit tests
         run: dotnet test DocumentIngestion.Unit.Tests/DocumentIngestion.Unit.Tests.csproj --framework net9.0 --verbosity normal
-      - name: Run Integration Tests
+
+      - name: Run integration tests
         run: dotnet test DocumentIngestion.Integration.Tests/DocumentIngestion.Integration.Tests.csproj --framework net9.0 --verbosity normal
-      - name: Install Swashbuckle CLI
-        run: dotnet tool install --global Swashbuckle.AspNetCore.Cli
+
+      # Use local Swashbuckle tool (NOT global)
+      - name: Restore local tools
+        working-directory: DocumentIngestion.Api
+        run: dotnet tool restore
+
       - name: Export OpenAPI spec
-        run: dotnet swagger tofile --output DocumentIngestion.Api/openapi.yaml ./DocumentIngestion.Api/bin/Release/net9.0/DocumentIngestion.Api.dll v1
-        
-    sync-to-readme:
-      needs: build-and-test
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-  
-        - name: Sync OpenAPI spec to ReadMe
-          uses: readmeio/rdme@v10
-          with:
-            rdme: >
-              openapi upload DocumentIngestion.Api/openapi.yaml --key=${{ secrets.README_API_KEY }}
+        working-directory: DocumentIngestion.Api
+        run: dotnet swagger tofile --output openapi.yaml ./bin/Release/net9.0/DocumentIngestion.Api.dll v1
+
+  sync-to-readme:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Sync OpenAPI spec to ReadMe
+        uses: readmeio/rdme@v10
+        with:
+          rdme: openapi upload DocumentIngestion.Api/openapi.yaml --key=${{ secrets.README_API_KEY }}
