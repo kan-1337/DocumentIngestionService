@@ -5,7 +5,7 @@ using DocumentIngestion.Api.Invoices.InvoiceEndpoints;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddCustomSwagger();
 builder.Services.AddEndpointsApiExplorer();
 // Add custom Swagger configuration
 builder.Services.AddCustomSwagger();
