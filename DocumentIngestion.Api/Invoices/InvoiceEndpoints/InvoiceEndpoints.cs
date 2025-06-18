@@ -1,8 +1,8 @@
 ﻿using DocumentIngestion.Api.Invoices.Dtos;
-using DocumentIngestion.Api.Invoices.Maping;
 using DocumentIngestion.Api.Invoices.Models;
 using DocumentIngestion.Api.Invoices.Services;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Common.Extensions;
 using Shared.Common.Models;
 
 namespace DocumentIngestion.Api.Invoices.InvoiceEndpoints;
@@ -12,7 +12,7 @@ public static class InvoiceEndpoints
     {
         var group = app.MapGroup("/invoices").WithTags("Invoices");
 
-        
+        // Create Invoice
         group.MapPost("/", async (CreateInvoiceRequest dto, IInvoiceService service) =>
         {
             if (dto.Lines is null || dto.Lines.Count == 0)
@@ -29,55 +29,53 @@ public static class InvoiceEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError);
 
-
+        // Get Invoice By Invoice Id
         group.MapGet("/{id:guid}", async (Guid id, IInvoiceService service) =>
         {
             var response = await service.GetByIdAsync(id);
             return Results.Ok(response);
         }).WithName("GetById")
             .WithSummary("Gets an response by response id.")
-            .WithOpenApi(operation =>
-            {
-                var idParam = operation.Parameters.FirstOrDefault(p => p.Name == "id");
-                if (idParam != null)
-                {
-                    idParam.Description = "Unique identifier for the invoice (Guid)";
-                }
-                return operation;
-            })
+            .WithParameterDescriptions(("id", "The unique identifier of the invoice (Guid)"))
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPost("/invoices/{id}/export", async (Guid id, IInvoiceService service) =>
+        // Export Invoice
+        group.MapPost("/invoices/{id}/export", async ([FromQuery] Guid id, IInvoiceService service) =>
         {
             var response = await service.ExportInvoiceAsync(id);
             return Results.Ok(response);
         }).WithName("ExportInvoice")
             .WithSummary("Exports an invoice to external system")
+            .WithParameterDescriptions(("id", "The unique identifier of the invoice (Guid)"))
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status422UnprocessableEntity)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError);
 
-        group.MapGet("/", async (
-                [FromQuery] int page,
-                [FromQuery] int pageSize,
-                [FromQuery] Guid? supplierId,
-                [FromQuery] InvoiceExportStatus? status,
-                [FromQuery] DateTime? from,
-                [FromQuery] DateTime? to,
-                IInvoiceService service) =>
+        // List Invoices with Pagination and Filtering
+        group.MapGet("/", async ([AsParameters]  InvoiceQueryFilter filter, IInvoiceService service) =>
         {
-            if (page < 1 || pageSize < 1)
-                return Results.BadRequest(new { message = "Page and pageSize must be greater than 0." });
-
-            var result = await service.GetPagedAsync(page, pageSize, supplierId, status, from, to);
+            var result = await service.GetPagedAsync(
+                            page: filter.Page, 
+                            pageSize: filter.PageSize, 
+                            supplierId: filter.SupplierId, 
+                            status: filter.Status, 
+                            from: filter.From, 
+                            to: filter.To);
 
             return Results.Ok(result);
         }).WithName("ListInvoices")
             .WithSummary("Lists all invoices with optional filtering and pagination.")
-            .WithDescription("Retrieves a paginated list of invoices with optional filtering by supplier, status, and date range.")
+            .WithParameterDescriptions(
+                ("Page", "The page number to retrieve. Must be greater than 0."),
+                ("PageSize", "The number of invoices per page. Must be greater than 0."),
+                ("SupplierId", "Optional. Filter by the supplier's unique identifier."),
+                ("Status", "Optional. Filter by invoice export status: NotExported (0), Exporting (1), Exported (2), ExportFailed (3)."),
+                ("From", "Optional. Filter invoices with an issue date from this date (inclusive)."),
+                ("To", "Optional. Filter invoices with an issue date up to this date (inclusive).")
+            )
             .Produces<PagedResult<InvoiceResponse>>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError);
