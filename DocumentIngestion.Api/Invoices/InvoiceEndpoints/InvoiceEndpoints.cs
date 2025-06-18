@@ -11,7 +11,8 @@ public static class InvoiceEndpoints
     public static void MapInvoiceEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("/invoices").WithTags("Invoices");
-        
+
+        // Create Invoice
         group.MapPost("/", async (CreateInvoiceRequest dto, IInvoiceService service) =>
         {
             if (dto.Lines is null || dto.Lines.Count == 0)
@@ -28,8 +29,8 @@ public static class InvoiceEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError);
 
-
-        group.MapGet("/{id:guid}", async ([FromQuery] Guid id, IInvoiceService service) =>
+        // Get Invoice By Invoice Id
+        group.MapGet("/{id:guid}", async (Guid id, IInvoiceService service) =>
         {
             var response = await service.GetByIdAsync(id);
             return Results.Ok(response);
@@ -39,6 +40,7 @@ public static class InvoiceEndpoints
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
 
+        // Export Invoice
         group.MapPost("/invoices/{id}/export", async ([FromQuery] Guid id, IInvoiceService service) =>
         {
             var response = await service.ExportInvoiceAsync(id);
@@ -52,6 +54,7 @@ public static class InvoiceEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError);
 
+        // List Invoices with Pagination and Filtering
         group.MapGet("/", async ([AsParameters]  InvoiceQueryFilter filter, IInvoiceService service) =>
         {
             var result = await service.GetPagedAsync(
