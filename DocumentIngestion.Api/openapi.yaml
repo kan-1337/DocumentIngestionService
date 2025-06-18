@@ -40,53 +40,62 @@
           "Invoices"
         ],
         "summary": "Lists all invoices with optional filtering and pagination.",
-        "description": "Retrieves a paginated list of invoices with optional filtering by supplier, status, and date range.",
         "operationId": "ListInvoices",
         "parameters": [
           {
-            "name": "page",
+            "name": "Page",
             "in": "query",
+            "description": "The page number to retrieve. Must be greater than 0.",
             "required": true,
             "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
               "type": "integer",
               "format": "int32"
             }
           },
           {
-            "name": "pageSize",
+            "name": "PageSize",
             "in": "query",
+            "description": "The number of invoices per page. Must be greater than 0.",
             "required": true,
             "schema": {
+              "maximum": 2147483647,
+              "minimum": 1,
               "type": "integer",
               "format": "int32"
             }
           },
           {
-            "name": "supplierId",
+            "name": "SupplierId",
             "in": "query",
+            "description": "Optional. Filter by the supplier's unique identifier.",
             "schema": {
               "type": "string",
               "format": "uuid"
             }
           },
           {
-            "name": "status",
+            "name": "Status",
             "in": "query",
+            "description": "Optional. Filter by invoice export status: NotExported (0), Exporting (1), Exported (2), ExportFailed (3).",
             "schema": {
               "$ref": "#/components/schemas/InvoiceExportStatus"
             }
           },
           {
-            "name": "from",
+            "name": "From",
             "in": "query",
+            "description": "Optional. Filter invoices with an issue date from this date (inclusive).",
             "schema": {
               "type": "string",
               "format": "date-time"
             }
           },
           {
-            "name": "to",
+            "name": "To",
             "in": "query",
+            "description": "Optional. Filter invoices with an issue date up to this date (inclusive).",
             "schema": {
               "type": "string",
               "format": "date-time"
@@ -124,7 +133,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Unique identifier for the invoice (Guid)",
+            "description": "The unique identifier of the invoice (Guid)",
             "required": true,
             "schema": {
               "type": "string",
@@ -152,7 +161,8 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
+            "in": "query",
+            "description": "The unique identifier of the invoice (Guid)",
             "required": true,
             "schema": {
               "type": "string",
@@ -165,7 +175,7 @@
             "description": "OK"
           },
           "422": {
-            "description": "Unprocessable Content"
+            "description": "Unprocessable Entity"
           },
           "404": {
             "description": "Not Found"
