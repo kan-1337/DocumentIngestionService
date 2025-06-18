@@ -1,22 +1,17 @@
 {
   "openapi": "3.0.4",
   "info": {
-    "title": "DocumentIngestion.Api | v1",
-    "version": "1.0.0"
+    "title": "DocumentIngestion.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "version": "1.0"
   },
-  "servers": [
-    {
-      "url": "http://localhost:5128/"
-    }
-  ],
   "paths": {
     "/invoices": {
       "post": {
         "tags": [
           "Invoices"
         ],
-        "summary": "Creates a new invoice",
-        "description": "Creates a new draft invoice.",
+        "summary": "Creates a new Invoice",
+        "description": "Creates a new draft response.",
         "operationId": "CreateInvoice",
         "requestBody": {
           "content": {
@@ -39,6 +34,83 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "Lists all invoices with optional filtering and pagination.",
+        "description": "Retrieves a paginated list of invoices with optional filtering by supplier, status, and date range.",
+        "operationId": "ListInvoices",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "supplierId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/InvoiceExportStatus"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponsePagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
     "/invoices/{id}": {
@@ -46,8 +118,37 @@
         "tags": [
           "Invoices"
         ],
-        "summary": "Gets an invoice by invoice id.",
+        "summary": "Gets an response by response id.",
         "operationId": "GetById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier for the invoice (Guid)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/invoices/invoices/{id}/export": {
+      "post": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "Exports an invoice to external system",
+        "operationId": "ExportInvoice",
         "parameters": [
           {
             "name": "id",
@@ -63,8 +164,17 @@
           "200": {
             "description": "OK"
           },
+          "422": {
+            "description": "Unprocessable Content"
+          },
           "404": {
             "description": "Not Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -87,45 +197,147 @@
             "type": "number",
             "format": "double"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "CreateInvoiceRequest": {
-        "required": [
-          "invoiceNumber",
-          "invoiceDate",
-          "currency",
-          "lines"
-        ],
         "type": "object",
         "properties": {
           "invoiceNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "The Invoice Number Should be unique for each supplier",
+            "nullable": true
           },
           "supplierId": {
             "type": "string",
+            "description": "Unique identifier for Supplier",
             "format": "uuid"
           },
           "invoiceDate": {
             "type": "string",
+            "description": "Invoice Date, when invoice was issued",
             "format": "date-time"
           },
           "currency": {
-            "type": "string"
+            "type": "string",
+            "description": "Which currency the invoice is set to",
+            "nullable": true
           },
           "lines": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CreateInvoiceLineRequest"
-            }
+            },
+            "description": "Invoice Lines represents each cost and item listed",
+            "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
+      },
+      "InvoiceExportStatus": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "InvoiceLineResponse": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unitPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "total": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "InvoiceResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique Identifier For the Invoice",
+            "format": "uuid"
+          },
+          "invoiceNumber": {
+            "type": "string",
+            "description": "The Invoice Number Should be unique for each supplier",
+            "nullable": true
+          },
+          "supplierId": {
+            "type": "string",
+            "description": "Unique identifier for Supplier",
+            "format": "uuid"
+          },
+          "invoiceDate": {
+            "type": "string",
+            "description": "Invoice Date, when invoice was issued",
+            "format": "date-time"
+          },
+          "totalAmount": {
+            "type": "number",
+            "description": "The total amount of quantity * amount on invoice line",
+            "format": "double"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Which currency the invoice is set to",
+            "nullable": true
+          },
+          "invoiceExportStatus": {
+            "$ref": "#/components/schemas/InvoiceExportStatus"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvoiceLineResponse"
+            },
+            "description": "Invoice Lines represents each cost and item listed",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "InvoiceResponsePagedResult": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvoiceResponse"
+            },
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
       }
     }
-  },
-  "tags": [
-    {
-      "name": "Invoices"
-    }
-  ]
+  }
 }

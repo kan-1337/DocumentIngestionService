@@ -105,7 +105,7 @@ public class InvoiceService  : IInvoiceService
     {
         if (page < 1)
         {
-            throw new DomainValidationException("Page number must be at least 1.");
+            throw new DomainValidationException("Page number must be at least 1");
         }
         if (pageSize < 1 || pageSize > 100)
         {
