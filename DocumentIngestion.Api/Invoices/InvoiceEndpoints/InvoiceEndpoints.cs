@@ -41,7 +41,7 @@ public static class InvoiceEndpoints
             .Produces(StatusCodes.Status404NotFound);
 
         // Export Invoice
-        group.MapPost("/invoices/{id}/export", async ([FromQuery] Guid id, IInvoiceService service) =>
+        group.MapPost("/{id}/export", async (Guid id, IInvoiceService service) =>
         {
             var response = await service.ExportInvoiceAsync(id);
             return Results.Ok(response);
