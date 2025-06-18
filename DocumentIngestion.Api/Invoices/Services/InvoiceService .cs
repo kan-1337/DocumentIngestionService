@@ -103,14 +103,7 @@ public class InvoiceService  : IInvoiceService
                             DateTime? from, 
                             DateTime? to)
     {
-        if (page < 1)
-        {
-            throw new DomainValidationException("Page number must be at least 1");
-        }
-        if (pageSize < 1 || pageSize > 100)
-        {
-            throw new DomainValidationException("Page size must be between 1 and 100.");
-        }
+        FilterValidation(page, pageSize, from, to);
 
         var allInvoices = await _repo.GetAllAsync();
 
@@ -153,6 +146,34 @@ public class InvoiceService  : IInvoiceService
             Page = page,
             PageSize = pageSize
         };
+    }
+
+    /// <summary>
+    /// Filter validation to ensure that page and pageSize are valid, and that from date is not after to date.
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="pageSize"></param>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    /// <exception cref="DomainValidationException"></exception>
+    private static void FilterValidation(int page, int pageSize, DateTime? from, DateTime? to)
+    {
+        if (page < 1)
+        {
+            throw new DomainValidationException("Page number must be at least 1");
+        }
+        if (pageSize < 1 || pageSize > 100)
+        {
+            throw new DomainValidationException("Page size must be between 1 and 100.");
+        }
+        if (page < 1 || pageSize < 1)
+        {
+            throw new DomainValidationException("Page and pageSize must be greater than 0.");
+        }
+        if (from.HasValue && to.HasValue && from > to)
+        {
+            throw new DomainValidationException("From date cannot be after To date.");
+        }
     }
 
     /// <summary>
