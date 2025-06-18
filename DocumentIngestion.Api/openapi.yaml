@@ -151,7 +151,7 @@
         }
       }
     },
-    "/invoices/invoices/{id}/export": {
+    "/invoices/{id}/export": {
       "post": {
         "tags": [
           "Invoices"
@@ -161,7 +161,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
             "description": "The unique identifier of the invoice (Guid)",
             "required": true,
             "schema": {
