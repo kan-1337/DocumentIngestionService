@@ -59,23 +59,33 @@ public class InvoiceService  : IInvoiceService
     public async Task<InvoiceResponse> ExportInvoiceAsync(Guid id)
     {
         var invoice = await _repo.GetByIdAsync(id) ?? throw new NotFoundException<Invoice, Guid>(id);
-
+        Console.WriteLine("id:" + id);
         if (invoice.InvoiceExportStatus == InvoiceExportStatus.Exported)
         {
             throw new ExportErrorMessage("Invoice has already been exported.");
         }
+        Console.WriteLine("invoice not exported");
 
         try
         {
             invoice.InvoiceExportStatus = InvoiceExportStatus.Exporting;
+            Console.WriteLine("Updating");
+
             await _repo.UpdateAsync(invoice);
+            Console.WriteLine("Updated");
+            Console.WriteLine("Exporting");
 
             await _external.ExportAsync(invoice);
+            Console.WriteLine("Exported");
 
             invoice.InvoiceExportStatus = InvoiceExportStatus.Exported;
             invoice.ExportedAt = DateTime.UtcNow;
             invoice.ExportErrorMessage = null;
+            Console.WriteLine("Updating again");
+
             await _repo.UpdateAsync(invoice);
+            Console.WriteLine("Updated");
+
         }
         catch (Exception ex)
         {
