@@ -8,6 +8,8 @@ https://test-mrsb.readme.io/reference/createinvoice#/
 - [Architecture](#architecture)
 - [Dependabot](#dependabot)
 - [CI/CD](#cicd)
+- [Commits and Rules](#branches-and-commit-rules)
+- [Security / CodeQL](#security)
 
 ## How to run: 
 
@@ -97,6 +99,41 @@ Here are some links and articles for best practices, and examples, including my 
 [.NET 9: New Features and Best Practices](https://dev.to/leandroveiga/enhanced-microservices-support-in-net-9-new-features-and-best-practices-1ci2#:~:text=Conclusion-,.,%2C%20secure%2C%20and%20resilient%20microservices.)
 
 [My old project](https://github.com/kan-1337/MicroServices)
+
+### Branches and Commit rules
+
+Dev is now the default branch, if this would ever go to production, the goal would be to make master/main branch the final step to update production.  
+So for now, all branches must inherit or be created from Dev.  
+
+At least one reviewer is required to pass the PR, we also need the tests and sync to readme docs to finish building before everything is green and good to go. 
+
+I have also disabled force push, only admin can bypass these rules.
+
+### Workflow
+
+Example: 
+- Create branch from dev for your feature/fix.
+- Open a Pull Request targeting dev.
+- Review & approval required (can be self-approval if solo, but ideally by another contributor).
+- Merge to dev after all checks pass.
+- Promote to master via PR when ready for production release.
+
+### Security
+
+[![CodeQL](https://img.shields.io/github/workflow/status/kan-1337/DocumentIngestionService/CodeQL)](https://github.com/kan-1337/DocumentIngestionService/actions/workflows/codeql-analysis.yml)
+
+
+
+This project leverages GitHub’s security features and CodeQL analysis to proactively detect and address potential vulnerabilities:
+
+- Code Scanning with CodeQL: Every pull request and push to dev or master triggers a CodeQL scan, automatically identifying common security issues in your C# codebase.
+- Dependabot: Monitors dependencies for known vulnerabilities and keeps packages up to date.
+- Branch Protection Rules: Ensures that critical branches (such as dev and master) require pull request reviews and passing status checks before merging.
+
+### Enabling CodeQL Locally
+
+    gh extension install github/gh-codeql
+    gh codeql analyze --database <db-path>
 
 ---
 
