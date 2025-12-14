@@ -1,7 +1,6 @@
 ﻿using DocumentIngestion.Api.Invoices.Dtos;
 using DocumentIngestion.Api.Invoices.Models;
 using DocumentIngestion.Api.Invoices.Services;
-using Microsoft.AspNetCore.Authorization;
 using Shared.Common.Extensions;
 using Shared.Common.Models;
 
@@ -12,9 +11,8 @@ public static class InvoiceEndpoints
     {
         var group = app.MapGroup("/invoices")
             .WithTags("Invoices")
-            .RequireAuthorization(); // All invoice endpoints require authentication by default
+            .RequireAuthorization();
 
-        // Create Invoice - Admin only
         group.MapPost("/", async (CreateInvoiceRequest dto, IInvoiceService service) =>
         {
             if (dto.Lines is null || dto.Lines.Count == 0)
