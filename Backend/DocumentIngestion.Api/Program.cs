@@ -15,6 +15,15 @@ builder.Services.AddInvoiceServicesAndRepositories();
 builder.Services.AddOpenApi();
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod());
+});
+
 var app = builder.Build();
 
 app.MapInvoiceEndpoints();
@@ -28,14 +37,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod());
-});
 
 app.UseCors();
 
