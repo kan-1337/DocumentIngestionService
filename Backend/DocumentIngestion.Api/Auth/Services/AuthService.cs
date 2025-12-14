@@ -51,22 +51,22 @@ public class AuthService : IAuthService
     }
 
     /// <summary>
-    /// Sanitizes user input to prevent log injection attacks by removing newlines and control characters
+    /// Sanitizes the input string for logging, removing all control characters for loging
     /// </summary>
-    /// <param name="input">The user-provided input to sanitize</param>
-    /// <returns>Sanitized string safe for logging</returns>
-    private static string SanitizeForLogging(string input)
+    /// <param name="input">The input string</param>
+    /// <returns>A sanitized <see cref="string"/></returns>
+    private static string SanitizeForLogging(string? input)
     {
         if (string.IsNullOrEmpty(input))
         {
-            return input;
+            return string.Empty;
         }
+        var sanitized = input
+            .Replace(Environment.NewLine, " ")
+            .Replace("\r", " ")
+            .Replace("\n", " ")
+            .Replace("\t", " ");
 
-        // Remove newlines and carriage returns to prevent log injection
-        return input
-            .Replace(Environment.NewLine, "")
-            .Replace("\r", "")
-            .Replace("\n", "")
-            .Replace("\t", "");
+        return new string(sanitized.Where(c => !char.IsControl(c) || c == ' ').ToArray());
     }
 }
