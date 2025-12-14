@@ -1,30 +1,50 @@
+import { useState } from "react";
 import type { InvoiceResponse } from "../../models/invoices.ts";
+import { InvoiceRow } from "./InvoiceRow.tsx";
+import { LineItems } from "./LineItems.tsx";
 
 export function InvoicesTable({ invoices }: { invoices: InvoiceResponse[] }) {
+  const [expandedRow, setExpandedRow] = useState<string | null>(null);
+
+  if (invoices.length === 0) {
+    return (
+      <div className="empty-state">
+        <p>No invoices found</p>
+      </div>
+    );
+  }
+
+  const toggleRow = (id: string) => {
+    setExpandedRow(expandedRow === id ? null : id);
+  };
+
   return (
-    <table className="table">
-      <thead>
-        <tr>
-          <th>Invoice #</th>
-          <th>Date</th>
-          <th>Total</th>
-          <th>Currency</th>
-          <th>Status</th>
-          <th>Supplier</th>
-        </tr>
-      </thead>
-      <tbody>
-        {invoices.map((inv) => (
-          <tr key={inv.id}>
-            <td>{inv.invoiceNumber}</td>
-            <td>{new Date(inv.invoiceDate).toLocaleDateString()}</td>
-            <td>{inv.totalAmount.toFixed(2)}</td>
-            <td>{inv.currency}</td>
-            <td>{inv.invoiceExportStatus}</td>
-            <td className="mono">{inv.supplierId}</td>
+    <div className="invoice-table-container">
+      <table className="invoice-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Invoice #</th>
+            <th>Date</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Supplier ID</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {invoices.map((invoice) => (
+            <>
+              <InvoiceRow
+                key={invoice.id}
+                invoice={invoice}
+                isExpanded={expandedRow === invoice.id}
+                onToggle={() => toggleRow(invoice.id)}
+              />
+              {expandedRow === invoice.id && <LineItems invoice={invoice} />}
+            </>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
