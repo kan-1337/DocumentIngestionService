@@ -7,7 +7,7 @@ public static class InvoiceServiceConfig
 {
     public static IServiceCollection AddInvoiceServicesAndRepositories(this IServiceCollection services)
     {
-        services.AddSingleton<IInvoiceRepository, InMemoryInvoiceService>();
+        services.AddScoped<IInvoiceRepository, EfInvoiceRepository>();
         services.AddScoped<IInvoiceService, InvoiceService>();
         services.AddSingleton<IExternalSystemClient, FakeExternalSystemClient>();
         return services;

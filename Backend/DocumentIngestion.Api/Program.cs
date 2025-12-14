@@ -1,6 +1,9 @@
 using DocumentIngestion.Api.Infrastructure.DependencyInjection;
+using DocumentIngestion.Api.Infrastructure.Extensions;
 using DocumentIngestion.Api.Infrastructure.Middleware;
+using DocumentIngestion.Api.Invoices.Context;
 using DocumentIngestion.Api.Invoices.InvoiceEndpoints;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +27,12 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod());
 });
 
+builder.Services.AddDbContext<InvoiceDbContext>(opt =>
+    opt.UseSqlite(builder.Configuration.GetConnectionString("InvoicesDb")));
+
 var app = builder.Build();
+
+app.ApplyMigrations();
 
 app.MapInvoiceEndpoints();
 app.UseMiddleware<ErrorHandlingMiddleware>();

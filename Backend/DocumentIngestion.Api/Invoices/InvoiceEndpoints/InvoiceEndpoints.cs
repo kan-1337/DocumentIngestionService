@@ -1,7 +1,6 @@
 ﻿using DocumentIngestion.Api.Invoices.Dtos;
 using DocumentIngestion.Api.Invoices.Models;
 using DocumentIngestion.Api.Invoices.Services;
-using Microsoft.AspNetCore.Mvc;
 using Shared.Common.Extensions;
 using Shared.Common.Models;
 

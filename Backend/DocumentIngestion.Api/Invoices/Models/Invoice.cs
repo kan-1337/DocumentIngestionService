@@ -4,6 +4,7 @@ using Shared.Common.Models;
 namespace DocumentIngestion.Api.Invoices.Models;
 public class Invoice : EntityBase
 {
+    private Invoice() { }
     public Guid SupplierId { get; set; }
     public string InvoiceNumber { get; private set; }
     public DateTime InvoiceDate { get; private set; }
@@ -12,9 +13,8 @@ public class Invoice : EntityBase
     public DateTime? ExportedAt { get; set; }
     public string? ExportErrorMessage { get; set; }
     public string Currency { get; private set; } = default!;
-
-    private readonly List<InvoiceLine> _lines = [];
-    public IReadOnlyCollection<InvoiceLine> Lines => _lines.AsReadOnly();
+    private readonly List<InvoiceLine> _lines = new();
+    public IReadOnlyCollection<InvoiceLine> Lines => _lines;
 
     public decimal TotalAmount => _lines.Sum(l => l.Total);
 
