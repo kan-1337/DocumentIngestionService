@@ -7,11 +7,13 @@ import "./InvoiceTable.css";
 interface InvoicesTableProps {
   invoices: InvoiceResponse[];
   onSelectInvoice: (id: string) => void;
+  onDeleteInvoice: (id: string) => void;
 }
 
 export function InvoicesTable({
   invoices,
   onSelectInvoice,
+  onDeleteInvoice,
 }: InvoicesTableProps) {
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
@@ -50,6 +52,7 @@ export function InvoicesTable({
                 isExpanded={expandedRow === invoice.id}
                 onToggle={() => toggleRow(invoice.id)}
                 onView={() => onSelectInvoice(invoice.id)}
+                onDelete={() => onDeleteInvoice(invoice.id)}
               />
               {expandedRow === invoice.id && <LineItems invoice={invoice} />}
             </>

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { getInvoices } from "../../../services/invoices/invoiceService.ts";
+import {
+  getInvoices,
+  deleteInvoice,
+} from "../../../services/invoices/invoiceService.ts";
 import type { InvoiceResponse } from "../../../models/invoices.ts";
 import { InvoicesTable } from "../InvoiceTable/InvoiceTable.tsx";
 import { InvoiceDetail } from "../InvoiceDetail/InvoiceDetail.tsx";
@@ -31,6 +34,21 @@ export function InvoicePage() {
     })();
   }, []);
 
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this invoice?")) {
+      return;
+    }
+
+    try {
+      await deleteInvoice(id);
+      setItems(items.filter((invoice) => invoice.id !== id));
+    } catch (e) {
+      alert(
+        `Failed to delete invoice: ${e instanceof Error ? e.message : "Unknown error"}`,
+      );
+    }
+  };
+
   if (selectedInvoiceId) {
     return (
       <InvoiceDetail
@@ -58,6 +76,7 @@ export function InvoicePage() {
         <InvoicesTable
           invoices={items}
           onSelectInvoice={setSelectedInvoiceId}
+          onDeleteInvoice={handleDelete}
         />
       )}
     </div>

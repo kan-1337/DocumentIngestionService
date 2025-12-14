@@ -48,4 +48,24 @@ public class EfInvoiceRepository : IInvoiceRepository
         await _db.SaveChangesAsync();
         return invoice;
     }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        var invoice = await _db.Invoices.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (invoice is null)
+        {
+            throw new NotFoundException<Invoice, Guid>(id);
+        }
+
+        try
+        {
+            _db.Invoices.Remove(invoice);
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new PersistenceException("Failed to delete invoice.", ex);
+        }
+    }
 }
