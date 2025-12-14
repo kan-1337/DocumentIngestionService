@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import type { InvoiceResponse } from "../../../models/invoices.ts";
 import { InvoiceRow } from "./InvoiceRow.tsx";
 import { LineItems } from "./LineItems.tsx";
@@ -46,19 +46,26 @@ export function InvoicesTable({
         </thead>
         <tbody>
           {invoices.map((invoice) => (
-            <>
+            <React.Fragment key={invoice.id}>
               <InvoiceRow
-                key={invoice.id}
                 invoice={invoice}
                 isExpanded={expandedRow === invoice.id}
                 onToggle={() => toggleRow(invoice.id)}
                 onView={() => onSelectInvoice(invoice.id)}
-                onDelete={onDeleteInvoice ? () => onDeleteInvoice(invoice.id) : undefined}
+                onDelete={
+                  onDeleteInvoice
+                    ? () => onDeleteInvoice(invoice.id)
+                    : undefined
+                }
                 isDropdownOpen={openDropdown === invoice.id}
-                onDropdownToggle={() => setOpenDropdown(openDropdown === invoice.id ? null : invoice.id)}
+                onDropdownToggle={() =>
+                  setOpenDropdown(
+                    openDropdown === invoice.id ? null : invoice.id,
+                  )
+                }
               />
               {expandedRow === invoice.id && <LineItems invoice={invoice} />}
-            </>
+            </React.Fragment>
           ))}
         </tbody>
       </table>

@@ -74,11 +74,7 @@ export function LoginPage() {
 
         {error && <div className="error-message">{error}</div>}
 
-        <button
-          className="login-btn"
-          onClick={handleLogin}
-          disabled={loading}
-        >
+        <button className="login-btn" onClick={handleLogin} disabled={loading}>
           {loading ? "Logging in..." : `Login as ${users[selectedUser].role}`}
         </button>
 
