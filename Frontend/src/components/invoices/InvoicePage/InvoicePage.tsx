@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { getInvoices } from "../../services/invoices/invoiceService.ts";
-import type { InvoiceResponse } from "../../models/invoices.ts";
-import { InvoicesTable } from "./invoiceTable.tsx";
-import "./invoices.css";
+import { getInvoices } from "../../../services/invoices/invoiceService.ts";
+import type { InvoiceResponse } from "../../../models/invoices.ts";
+import { InvoicesTable } from "../InvoiceTable/InvoiceTable.tsx";
+import { InvoiceDetail } from "../InvoiceDetail/InvoiceDetail.tsx";
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 10;
@@ -11,6 +11,9 @@ export function InvoicePage() {
   const [items, setItems] = useState<InvoiceResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedInvoiceId, setSelectedInvoiceId] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
     (async () => {
@@ -28,6 +31,15 @@ export function InvoicePage() {
     })();
   }, []);
 
+  if (selectedInvoiceId) {
+    return (
+      <InvoiceDetail
+        invoiceId={selectedInvoiceId}
+        onBack={() => setSelectedInvoiceId(null)}
+      />
+    );
+  }
+
   return (
     <div className="invoice-page">
       {loading && (
@@ -42,7 +54,12 @@ export function InvoicePage() {
         </div>
       )}
 
-      {!loading && !error && <InvoicesTable invoices={items} />}
+      {!loading && !error && (
+        <InvoicesTable
+          invoices={items}
+          onSelectInvoice={setSelectedInvoiceId}
+        />
+      )}
     </div>
   );
 }

@@ -1,10 +1,10 @@
-import type { InvoiceResponse } from "../../models/invoices.ts";
+import type { InvoiceResponse } from "../../../models/invoices.ts";
 
 interface LineItemsProps {
   invoice: InvoiceResponse;
 }
 
-const COLUMN_SPAN = 6;
+const COLUMN_SPAN = 7;
 
 export function LineItems({ invoice }: LineItemsProps) {
   if (!invoice.lines || invoice.lines.length === 0) {
@@ -30,8 +30,13 @@ export function LineItems({ invoice }: LineItemsProps) {
                 <tr key={idx}>
                   <td>{line.description}</td>
                   <td>{line.quantity}</td>
-                  <td>{invoice.currency} {line.unitPrice.toFixed(2)}</td>
-                  <td>{invoice.currency} {(line.quantity * line.unitPrice).toFixed(2)}</td>
+                  <td>
+                    {invoice.currency} {line.unitPrice.toFixed(2)}
+                  </td>
+                  <td>
+                    {invoice.currency}{" "}
+                    {(line.quantity * line.unitPrice).toFixed(2)}
+                  </td>
                 </tr>
               ))}
             </tbody>
