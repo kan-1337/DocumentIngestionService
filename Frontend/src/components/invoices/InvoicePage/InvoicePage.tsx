@@ -6,11 +6,13 @@ import {
 import type { InvoiceResponse } from "../../../models/invoices.ts";
 import { InvoicesTable } from "../InvoiceTable/InvoiceTable.tsx";
 import { InvoiceDetail } from "../InvoiceDetail/InvoiceDetail.tsx";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 10;
 
 export function InvoicePage() {
+  const { isAdmin } = useAuth();
   const [items, setItems] = useState<InvoiceResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -76,7 +78,7 @@ export function InvoicePage() {
         <InvoicesTable
           invoices={items}
           onSelectInvoice={setSelectedInvoiceId}
-          onDeleteInvoice={handleDelete}
+          onDeleteInvoice={isAdmin ? handleDelete : undefined}
         />
       )}
     </div>

@@ -1,4 +1,4 @@
-import { httpGet, httpDelete } from "../http/httpClient.ts";
+import { httpGet, httpDelete } from "../http/httpClient";
 import type { InvoiceResponse } from "../../models/invoices.ts";
 import type { PagedResult } from "../../models/common.ts";
 

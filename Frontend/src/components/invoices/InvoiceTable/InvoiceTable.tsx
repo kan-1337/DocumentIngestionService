@@ -7,7 +7,7 @@ import "./InvoiceTable.css";
 interface InvoicesTableProps {
   invoices: InvoiceResponse[];
   onSelectInvoice: (id: string) => void;
-  onDeleteInvoice: (id: string) => void;
+  onDeleteInvoice?: (id: string) => void;
 }
 
 export function InvoicesTable({
@@ -16,6 +16,7 @@ export function InvoicesTable({
   onDeleteInvoice,
 }: InvoicesTableProps) {
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   if (invoices.length === 0) {
     return (
@@ -52,7 +53,9 @@ export function InvoicesTable({
                 isExpanded={expandedRow === invoice.id}
                 onToggle={() => toggleRow(invoice.id)}
                 onView={() => onSelectInvoice(invoice.id)}
-                onDelete={() => onDeleteInvoice(invoice.id)}
+                onDelete={onDeleteInvoice ? () => onDeleteInvoice(invoice.id) : undefined}
+                isDropdownOpen={openDropdown === invoice.id}
+                onDropdownToggle={() => setOpenDropdown(openDropdown === invoice.id ? null : invoice.id)}
               />
               {expandedRow === invoice.id && <LineItems invoice={invoice} />}
             </>
