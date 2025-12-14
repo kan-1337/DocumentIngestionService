@@ -80,7 +80,18 @@ This project uses **Dependabot** to keep dependencies up to date:
 [![.NET CI](https://github.com/kan-1337/DocumentIngestionService/workflows/.NET%20CI/badge.svg)](https://github.com/kan-1337/DocumentIngestionService/actions/workflows/dotnet-ci.yml)
 
 
+### For Docker
 
+Please run the command in the root folder
+```
+docker-compose up --build
+```
+
+This should run both the docker for frontend and backend
+URLs should be 
+
+Frontend: http://localhost:3000/
+Backend: http://localhost:5000/swagger/index.html
 
 ### CI/CD 
 
