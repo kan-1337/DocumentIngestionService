@@ -8,4 +8,5 @@ public interface IInvoiceRepository
     Task<bool> GetByInvoiceNumberAsync(string invoiceNumber, Guid supplierId);
     Task<Invoice> UpdateAsync(Invoice invoice);
     Task<List<Invoice>> GetAllAsync();
+    Task DeleteAsync(Guid id);
 }

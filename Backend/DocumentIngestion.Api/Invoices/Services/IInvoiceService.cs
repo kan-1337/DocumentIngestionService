@@ -52,4 +52,14 @@ public interface IInvoiceService
         InvoiceExportStatus? status,
         DateTime? from,
         DateTime? to);
+
+    /// <summary>
+    /// Deletes an invoice by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the invoice to delete</param>
+    /// <returns>A task representing the asynchronous operation</returns>
+    /// <exception cref="NotFoundException{Invoice, Guid}">
+    /// Thrown if the invoice with the specified ID does not exist.
+    /// </exception>
+    Task DeleteAsync(Guid id);
 }

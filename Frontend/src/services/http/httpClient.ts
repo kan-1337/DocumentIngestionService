@@ -17,3 +17,16 @@ export async function httpGet<T>(path: string, query?: Record<string, string>) {
 
   return (await res.json()) as T;
 }
+
+export async function httpDelete(path: string) {
+  const url = new URL(path, API_BASE_URL);
+
+  const res = await fetch(url.toString(), {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`DELETE ${url.pathname} failed (${res.status}): ${text}`);
+  }
+}

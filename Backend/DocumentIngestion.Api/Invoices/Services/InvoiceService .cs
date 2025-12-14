@@ -158,6 +158,15 @@ public class InvoiceService  : IInvoiceService
         };
     }
 
+    public async Task DeleteAsync(Guid id)
+    {
+        _logger.LogInformation("Attempting to delete invoice {InvoiceId}", id);
+        
+        await _repo.DeleteAsync(id);
+        
+        _logger.LogInformation("Invoice {InvoiceId} deleted successfully", id);
+    }
+
     /// <summary>
     /// Filter validation to ensure that page and pageSize are valid, and that from date is not after to date.
     /// </summary>
