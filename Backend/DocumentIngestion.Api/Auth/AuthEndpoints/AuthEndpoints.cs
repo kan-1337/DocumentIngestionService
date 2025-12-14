@@ -29,8 +29,8 @@ public static class AuthEndpoints
         .WithName("Login")
         .WithSummary("Authenticates a user and returns a JWT token")
         .WithDescription(@"Demo users:
-- Username: 'user', Password: 'user123' (User role)
-- Username: 'admin', Password: 'admin123' (Admin role)")
+            - Username: 'user', Password: 'user123' (User role)
+            - Username: 'admin', Password: 'admin123' (Admin role)")
         .Produces<LoginResponse>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status400BadRequest)
         .Produces(StatusCodes.Status401Unauthorized)
