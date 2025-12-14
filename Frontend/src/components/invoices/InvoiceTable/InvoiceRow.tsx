@@ -11,6 +11,8 @@ interface InvoiceRowProps {
   onToggle: () => void;
   onView: () => void;
   onDelete?: () => void;
+  isDropdownOpen: boolean;
+  onDropdownToggle: () => void;
 }
 
 export function InvoiceRow({
@@ -19,20 +21,21 @@ export function InvoiceRow({
   onToggle,
   onView,
   onDelete,
+  isDropdownOpen,
+  onDropdownToggle,
 }: InvoiceRowProps) {
-  const [showDropdown, setShowDropdown] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (showDropdown && buttonRef.current) {
+    if (isDropdownOpen && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setDropdownPosition({
         top: rect.bottom + window.scrollY,
         left: rect.right + window.scrollX - 120,
       });
     }
-  }, [showDropdown]);
+  }, [isDropdownOpen]);
 
   return (
     <>
@@ -62,7 +65,7 @@ export function InvoiceRow({
             ref={buttonRef}
             onClick={(e) => {
               e.stopPropagation();
-              setShowDropdown(!showDropdown);
+              onDropdownToggle();
             }}
             className="dropdown-button"
           >
@@ -70,7 +73,7 @@ export function InvoiceRow({
           </button>
         </td>
       </tr>
-      {showDropdown && (
+      {isDropdownOpen && (
         <div
           className="dropdown-menu-fixed"
           style={{
@@ -82,7 +85,7 @@ export function InvoiceRow({
             onClick={(e) => {
               e.stopPropagation();
               onView();
-              setShowDropdown(false);
+              onDropdownToggle();
             }}
             className="dropdown-item"
           >
@@ -93,7 +96,7 @@ export function InvoiceRow({
               onClick={(e) => {
                 e.stopPropagation();
                 onDelete();
-                setShowDropdown(false);
+                onDropdownToggle();
               }}
               className="dropdown-item delete"
             >
