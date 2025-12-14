@@ -8,3 +8,7 @@ export function getInvoices(page: number, pageSize: number) {
     pageSize: String(pageSize),
   });
 }
+
+export function getInvoiceById(id: string) {
+  return httpGet<InvoiceResponse>(`/invoices/${id}`);
+}
