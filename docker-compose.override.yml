@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  backend:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Logging__LogLevel__Default=Debug
+      - Logging__LogLevel__Microsoft.AspNetCore=Information
+    volumes:
+      - backend-data:/app/data
+    ports:
+      - "5000:8080"
+      - "5001:8081"
