@@ -1,3 +1,4 @@
+using DocumentIngestion.Api.Auth.AuthEndpoints;
 using DocumentIngestion.Api.Infrastructure.DependencyInjection;
 using DocumentIngestion.Api.Infrastructure.Extensions;
 using DocumentIngestion.Api.Infrastructure.Middleware;
@@ -9,11 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomSwagger();
-builder.Services.AddEndpointsApiExplorer();
-// Add custom Swagger configuration
-builder.Services.AddCustomSwagger();
-// Add services to the container.
 builder.Services.AddInvoiceServicesAndRepositories();
+
+builder.Services.AddAuthServices(builder.Configuration);
+
+builder.Services.AddHealthChecks();
 
 builder.Services.AddOpenApi();
 builder.Logging.ClearProviders();
@@ -32,10 +33,8 @@ builder.Services.AddDbContext<InvoiceDbContext>(opt =>
 
 var app = builder.Build();
 
+// Apply database migrations
 app.ApplyMigrations();
-
-app.MapInvoiceEndpoints();
-app.UseMiddleware<ErrorHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -48,8 +47,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 
-
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapHealthChecks("/health").AllowAnonymous();
+
+// Register endpoints
+app.MapAuthEndpoints();
+app.MapInvoiceEndpoints();
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.Run();
 
