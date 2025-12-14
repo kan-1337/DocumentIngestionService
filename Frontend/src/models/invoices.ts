@@ -23,4 +23,4 @@ export type InvoiceResponse = {
 };
 
 export type InvoiceExportStatus =
-  typeof InvoiceExportStatus[keyof typeof InvoiceExportStatus];
+  (typeof InvoiceExportStatus)[keyof typeof InvoiceExportStatus];
