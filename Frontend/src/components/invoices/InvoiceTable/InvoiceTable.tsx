@@ -1,9 +1,18 @@
 import { useState } from "react";
-import type { InvoiceResponse } from "../../models/invoices.ts";
+import type { InvoiceResponse } from "../../../models/invoices.ts";
 import { InvoiceRow } from "./InvoiceRow.tsx";
 import { LineItems } from "./LineItems.tsx";
+import "./InvoiceTable.css";
 
-export function InvoicesTable({ invoices }: { invoices: InvoiceResponse[] }) {
+interface InvoicesTableProps {
+  invoices: InvoiceResponse[];
+  onSelectInvoice: (id: string) => void;
+}
+
+export function InvoicesTable({
+  invoices,
+  onSelectInvoice,
+}: InvoicesTableProps) {
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
   if (invoices.length === 0) {
@@ -29,6 +38,7 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceResponse[] }) {
             <th>Total Amount</th>
             <th>Status</th>
             <th>Supplier ID</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -39,6 +49,7 @@ export function InvoicesTable({ invoices }: { invoices: InvoiceResponse[] }) {
                 invoice={invoice}
                 isExpanded={expandedRow === invoice.id}
                 onToggle={() => toggleRow(invoice.id)}
+                onView={() => onSelectInvoice(invoice.id)}
               />
               {expandedRow === invoice.id && <LineItems invoice={invoice} />}
             </>
