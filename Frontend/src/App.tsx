@@ -1,5 +1,5 @@
 import "./App.css";
-import { InvoicePage } from "./components/invoices/invoicePage.tsx";
+import { InvoicePage } from "./components/invoices/InvoicePage/InvoicePage.tsx";
 
 function App() {
   return (
