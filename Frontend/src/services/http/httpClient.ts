@@ -5,12 +5,10 @@ function getAuthHeaders(): HeadersInit {
   const stored = localStorage.getItem("auth_user");
   if (stored) {
     const user = JSON.parse(stored);
-    console.log("Auth token:", user.token.substring(0, 50) + "...");
     return {
       Authorization: `Bearer ${user.token}`,
     };
   }
-  console.warn("No auth token found in localStorage");
   return {};
 }
 
