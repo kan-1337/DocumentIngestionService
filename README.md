@@ -8,6 +8,7 @@ https://test-mrsb.readme.io/reference/createinvoice#/
 - [Architecture](#architecture)
 - [Dependabot](#dependabot)
 - [CI/CD](#cicd)
+- [For Docker](#for-docker)
 - [Commits and Rules](#branches-and-commit-rules)
 - [Security / CodeQL](#security)
 
@@ -32,19 +33,45 @@ dotnet run --launch-profile https
 * https://localhost:7227/invoices (For post requests)
 * https://localhost:7227/invoices/guid (For getbyid request)
 
+### For Authorization
+
+Please for login and authorization use this 
+```
+{
+  "username": "admin",
+  "password": "admin123"
+}
+```
+or 
+
+```
+{
+  "username": "user",
+  "password": "user123"
+}
+```
+
+And the Bearer [Token] to authorize creation of documents
+
 ### Request example for post
 
 ```
 {
-  "invoiceNumber": "string",
+  "invoiceNumber": "Test 1",
   "supplierId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "invoiceDate": "2025-06-10T08:07:27.128Z",
-  "currency": "string",
+  "currency": "DKK",
   "lines": [
     {
-      "description": "string",
-      "quantity": 0,
-      "unitPrice": 0
+      "description": "Book",
+      "quantity": 2,
+      "unitPrice": 55
+    }
+  ],
+    {
+      "description": "Laptop",
+      "quantity": 1,
+      "unitPrice": 3999
     }
   ]
 }
@@ -156,6 +183,8 @@ This project leverages GitHub’s security features and CodeQL analysis to proac
 This is a relatively simple demonstration application which should be enough to showcase theoretically a real world scenario.  
 I've used some inspirations both from my past experience working with something similar, and some personal projects I've worked on. 
 For preparation I have used Articles, videos and sparring with chatgpt, regarding some of the design decisions, pros and cons of some architectures, etc.
+
+This project now has added Docker and Frontend Part written in React.  Authorization example and persistancy.  The readme has been updated with information on how to run.
 
 The app simply receives a post request and a get request, I picked minimal API because I believed it would make sense in a smaller more contained project, since then
 I might have some reservations, mostly just because the functionality for data annotations seems to be missing, not a big deal for this project, but it's something to keep in mind
